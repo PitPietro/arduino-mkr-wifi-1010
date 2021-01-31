@@ -2,8 +2,6 @@
 #include "arduino_secrets.h"
 #define DIV "----------------------------------------"
 
-char ssid[] = WIFI_SSID;
-char pwd[] = WIFI_PWD;
 int status = WL_IDLE_STATUS; // Wifi radio's status
 
 // set a custom delay for the 'loop()' function
@@ -13,22 +11,21 @@ const unsigned int custom_delay = 5 * 1000;
 void setup() {
   // initialize serial communication and wait for port to open
   Serial.begin(9600);
-
   while (!Serial);
 
   // attempt to connect to Wifi network
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to network: ");
-    Serial.println(ssid);
+    Serial.println(WIFI_SSID);
 
-    // connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pwd);
+    // connect to WPA/WPA2 network
+    status = WiFi.begin(WIFI_SSID, WIFI_PWD);
 
-    // wait 10 seconds for connection
+    // wait for connection
     delay(custom_delay);
   }
 
-  // you're connected now, so print out the data:
+  // the board is now connected, print out the data
   Serial.println("You're connected to the network");
 
   Serial.println(DIV);
@@ -37,7 +34,7 @@ void setup() {
 }
 
 void loop() {
-  // check the network connection once every 10 seconds:
+  // check the network connection once every 'custom_delay' seconds
   delay(custom_delay);
   printData();
   Serial.println(DIV);
@@ -46,7 +43,7 @@ void loop() {
 void printData() {
   Serial.println("Board Information:");
 
-  // print your board's IP address:
+  // print the board's IP address
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
@@ -75,7 +72,7 @@ void printData() {
   #define WIFI_PWD "" // place your WiFi password inside the quotes
   ```
 
-  Note: I will add all the 'arduino_secrets.h' files to '.gitignore'.
+  Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
 
   The official tutorial is available at:
   Connecting MKR WiFi 1010 to a Wi-Fi network

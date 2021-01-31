@@ -13,3 +13,7 @@ If you're using the offline Arduino IDE, you need the **WiFiNINA** library, so n
 
 After opening a new project file with **Ctrl** + **N**, you need to add a file for the sensitive informations (WiFi's SSID, password, ...).
 Click on the arrow on the right, and then **New Tab** (or **Ctrl** + **Shift** + **N**). Call the file `arduino_secrets.h`
+
+## Libraries
+### WiFiNINA
+[WiFiNINA_Generic](https://www.arduino.cc/en/Reference/WiFiNINA).
