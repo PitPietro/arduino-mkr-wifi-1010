@@ -1,3 +1,18 @@
+/*
+ * Press Ctrl + Shift + N and create 'arduino_secrets.h' file as follow:
+ * 
+ * ```c
+ * #define WIFI_SSID "" // place your WiFi name inside the quotes
+ * #define WIFI_PWD "" // place your WiFi password inside the quotes
+ * ```
+ * 
+ * Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
+ * 
+ * The official tutorial is available at:
+ * Connecting MKR WiFi 1010 to a Wi-Fi network
+ * https://www.arduino.cc/en/Guide/MKRWiFi1010/connecting-to-wifi-network
+ * https://www.arduino.cc/en/Reference/WiFiNINA
+*/
 #include <WiFiNINA.h>
 #include "arduino_secrets.h"
 #define DIV "----------------------------------------"
@@ -63,20 +78,3 @@ void printData() {
   Serial.println(encryption, HEX);
   Serial.println();
 }
-
-/*
-  Press Ctrl + Shift + N and create 'arduino_secrets.h' file as follow:
-
-  ```c
-  #define WIFI_SSID "" // place your WiFi name inside the quotes
-  #define WIFI_PWD "" // place your WiFi password inside the quotes
-  ```
-
-  Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
-
-  The official tutorial is available at:
-  Connecting MKR WiFi 1010 to a Wi-Fi network
-  https://www.arduino.cc/en/Guide/MKRWiFi1010/connecting-to-wifi-network
-
-  https://www.arduino.cc/en/Reference/WiFiNINA
-*/
