@@ -1,21 +1,22 @@
 /*
-  ASCII table
-
-  Inspired by http://www.arduino.cc/en/Tutorial/ASCIITable
+ * ASCII table
+ * 
+ * Inspired by http://www.arduino.cc/en/Tutorial/ASCIITable
+ * Reference: https://www.arduino.cc/reference/en/language/functions/communication/serial/
 */
 
 void setup() {
-  //Initialize serial
+  // initialize serial
   Serial.begin(9600);
-  
+  // wait for serial port to connect. Needed for native USB port only
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
+    ;
   }
 
   Serial.println("ASCII Table");
 }
 
-// the first visible ASCII element is '!' which is associated with the number 33
+// the first visible ASCII element is the exclamation mark, '!', which is associated to the number 33
 
 char character = 33; // this declaration is equivalent to the one below
 // char character = '!'; // this declaration is equivalent to the one above
@@ -50,9 +51,9 @@ void loop() {
   // Note: 'println()' function is used in place if 'print()' to apply a line break
   Serial.println(character, BIN);
 
-  // if the last visible character '~' (or 126) is printed, when stop:
+  // if the last visible character '~' (or 126) is printed, when stop
   // Note: the condition below is equivalent to: if (character == '~')
-  if (character == 126) {     {
+  if (character == 126) {
     // this loop, loops forever and does nothing
     while (true) {
       continue;
