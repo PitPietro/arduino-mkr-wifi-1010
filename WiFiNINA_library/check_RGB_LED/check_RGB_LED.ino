@@ -29,7 +29,7 @@ void setup() {
   // initialize serial communication and wait for port to open
   Serial.begin(9600);
   // wait for serial port to connect. Needed for native USB port only
-  while (!Serial);  
+  while (!Serial);
 
   /*
   char c = 48; // ASCII --> 0
