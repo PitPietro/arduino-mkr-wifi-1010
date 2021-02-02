@@ -26,7 +26,14 @@ const unsigned int custom_delay = 5 * 1000;
 void setup() {
   // initialize serial communication and wait for port to open
   Serial.begin(9600);
+  // wait for serial port to connect. Needed for native USB port only
   while (!Serial);
+
+  // check for the WiFi module
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    while (true); // do not continue
+  }
 
   // attempt to connect to Wifi network
   while (status != WL_CONNECTED) {
