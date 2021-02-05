@@ -6,7 +6,7 @@
  * Reference: https://www.arduino.cc/en/pmwiki.php?n=Reference/Map
 */
 
-int potPin = A0;
+const int potPin = A0;
 
 void setup() {
   // initialize serial communication and wait for port to open
@@ -18,7 +18,7 @@ void setup() {
 void loop() {
   // read the input on analog pin A0
   int analogValue = analogRead(potPin);
-  int mappedValue = map(analogValue, 0, 1023, 0, 255);
+  unsigned short int mappedValue = map(analogValue, 0, 1023, 0, 255);
   // analogWrite(4, mappedValue); // for a PWM LED
   
   Serial.print(analogValue);
