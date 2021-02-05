@@ -6,7 +6,7 @@
  * the volga value is a floating point number, you need to use the 'floatMap' function.
  * 
  * Reference: https://arduinogetstarted.com/tutorials/arduino-potentiometer
- */
+*/
 
 int potPin = A0;
 
@@ -14,7 +14,6 @@ float floatMap(float x, float in_min, float in_max, float out_min, float out_max
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-// the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication and wait for port to open
   Serial.begin(9600);
