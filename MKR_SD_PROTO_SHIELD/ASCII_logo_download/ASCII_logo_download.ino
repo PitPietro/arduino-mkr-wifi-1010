@@ -31,6 +31,7 @@
  * SD.h https://www.arduino.cc/en/Reference/SD
  * SD.h notes https://www.arduino.cc/en/Reference/SDCardNotes
  * SPI.h https://www.arduino.cc/en/Reference/SPI
+ * Formatting the SD to FAT32: https://ragnyll.gitlab.io/2018/05/22/format-a-sd-card-to-fat-32linux.html
 */
 #include <SD.h>
 #include <SPI.h>
