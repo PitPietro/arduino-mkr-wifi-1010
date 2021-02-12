@@ -11,6 +11,7 @@
  * ```
  * 
  * Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
+ * 
  * Doc: https://www.arduino.cc/en/Tutorial/LibraryExamples/WiFiNINAUdpNTPClient
  * NTP: http://en.wikipedia.org/wiki/Network_Time_Protocol
 */
@@ -26,10 +27,10 @@ int status = WL_IDLE_STATUS;
 const unsigned short int localPort = 2390;
 
 // time.nist.gov NTP server
-IPAddress timeServer(129, 6, 15, 28); 
+IPAddress timeServer(129, 6, 15, 28);
 
 // NTP time stamp is in the first 48 bytes of the message
-const int NTP_PACKET_SIZE = 48; 
+const int NTP_PACKET_SIZE = 48;
 
 // buffer to hold incoming and outgoing packets
 byte packetBuffer[NTP_PACKET_SIZE];
@@ -38,7 +39,7 @@ byte packetBuffer[NTP_PACKET_SIZE];
 WiFiUDP Udp;
 
 // send an NTP request to the time server at the given address
-unsigned long sendNTPpacket(IPAddress& address) {  
+unsigned long sendNTPpacket(IPAddress& address) {
   // set all bytes in the buffer to 0
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
 
@@ -46,10 +47,10 @@ unsigned long sendNTPpacket(IPAddress& address) {
 
   // LI, Version, Mode
   packetBuffer[0] = 0b11100011;
-  
+
   // Stratum, or type of clock
   packetBuffer[1] = 0;
-       
+
   // Polling Interval
   packetBuffer[2] = 6;
 
@@ -85,7 +86,7 @@ void printData() {
 
   // print the received signal strength
   long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
+  Serial.print("signal strength (RSSI): ");
   Serial.println(rssi);
 
   byte encryption = WiFi.encryptionType();
@@ -122,7 +123,7 @@ void setup() {
   Serial.println("You're connected to the network");
 
   printData();
-  
+
   Serial.println("\nStarting connection to server...");
   Udp.begin(localPort);
 }
@@ -135,64 +136,78 @@ void loop() {
   delay(1000);
 
   if (Udp.parsePacket()) {
-    Serial.println("packet received");
-    
+    // Serial.println("packet received");
+
     // the board received a packet, read the data from it
     // read the packet into the buffer
-    Udp.read(packetBuffer, NTP_PACKET_SIZE); 
+    Udp.read(packetBuffer, NTP_PACKET_SIZE);
 
     // the timestamp starts at byte 40 of the received packet and is four bytes (or two words) long
     // 1) esxtract the two words
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
     unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-    
+
     // 2) combine the four bytes (two words) into a long integer
     // this is NTP time (seconds since Jan 1 1900)
     unsigned long secsSince1900 = highWord << 16 | lowWord;
-    
-    Serial.print("Seconds since Jan 1 1900 = ");
-    Serial.println(secsSince1900);
 
     // 3) convert NTP time into everyday time
-    Serial.print("Unix time = ");
-    
     // Unix time starts on Jan 1 1970. In seconds, that's 2208988800
     const unsigned long seventyYears = 2208988800UL;
 
-    // subtract seventy years
+    // subtract seventy years: Unix time
     unsigned long epoch = secsSince1900 - seventyYears;
 
-    // print Unix time
-    Serial.println(epoch);
-    
-    // print the hour, minute and second
-    // UTC is the time at Greenwich Meridian (GMT)
-    Serial.print("The UTC time is ");
-    
-    // print the hour (86400 equals secs per day)
-    Serial.print((epoch  % 86400L) / 3600);
-    Serial.print(':');
+    // an hour is 86400 equals secs per day
+    unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
+    // String strHoursUTC = String(hoursUTC);
 
-    if (((epoch % 3600) / 60) < 10) {
-      // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
-      
-      Serial.print('0');
+    // minutes in UTC time saved as int and String
+    // a minute is 3600 equals secs per minute
+    unsigned short int minutesUTC = (epoch % 3600) / 60;
+    String strMinutesUTC = "";
+
+    // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
+    if (minutesUTC < 10) {
+      strMinutesUTC.concat("0");
     }
 
-    // print the minute (3600 equals secs per minute)
-    Serial.print((epoch  % 3600) / 60);
-    Serial.print(':');
+    strMinutesUTC.concat(String(minutesUTC));
 
-    if ((epoch % 60) < 10) {
-      // in the first 10 seconds of each minute, we'll want a leading '0' (i.e. '9:5:6' becomes '9:05:06'
-      
-      Serial.print('0');
+    // seconds in UTC time saved as int and String
+    unsigned short int secondsUTC = epoch % 60;
+    String strSecondsUTC = "";
+
+    // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '9:05:06')
+    if (secondsUTC < 10) {
+      strSecondsUTC.concat("0");
     }
 
-    // print the second
-    Serial.println(epoch % 60); 
+    strSecondsUTC.concat(String(secondsUTC));
+
+    /*
+     * UTC is the time at Greenwich Meridian (GMT)
+     * CET is the time at Central European Time, which is UTC + 1
+     * CEST is the time at Central European Summer Time, which is UTC + 2
+     * 
+     * Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
+     * see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
+     */
+    Serial.println("\n\n| Seconds since Jan 1 1900 | Unix time  |    UTC   |");
+    Serial.print("|--------------------------|------------|----------|\n|        ");
+    Serial.print(secsSince1900);
+    Serial.print("        | ");
+    Serial.print(epoch);
+    Serial.print(" | ");
+    Serial.print(hoursUTC);
+    Serial.print(":");
+    Serial.print(strMinutesUTC);
+    Serial.print(":");
+    Serial.print(strSecondsUTC);
+    Serial.print(" |\n\n");
+   
   }
 
-  // wait ten seconds before asking for the time again
-  delay(10000);
+  // wait 1 second before asking for the time again
+  delay(1000);
 }
