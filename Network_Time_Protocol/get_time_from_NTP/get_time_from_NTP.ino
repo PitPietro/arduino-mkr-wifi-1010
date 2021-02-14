@@ -193,8 +193,12 @@ void loop() {
      * Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
      * see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
      */
-    Serial.println("\n\n| Seconds since Jan 1 1900 | Unix time  |    UTC   |");
-    Serial.print("|--------------------------|------------|----------|\n|        ");
+     
+    // CET = UTC + 1 hour
+    String strHoursCET = String(hoursUTC + 1);
+    
+    Serial.println("\n\n| Seconds since Jan 1 1900 | Unix time  |    UTC   |    CET   |");
+    Serial.print("|--------------------------|------------|----------|----------|\n|        ");
     Serial.print(secsSince1900);
     Serial.print("        | ");
     Serial.print(epoch);
@@ -204,8 +208,13 @@ void loop() {
     Serial.print(strMinutesUTC);
     Serial.print(":");
     Serial.print(strSecondsUTC);
+    Serial.print(" | ");
+    Serial.print(strHoursCET);
+    Serial.print(":");
+    Serial.print(strMinutesUTC);
+    Serial.print(":");
+    Serial.print(strSecondsUTC);
     Serial.print(" |\n\n");
-   
   }
 
   // wait 1 second before asking for the time again
