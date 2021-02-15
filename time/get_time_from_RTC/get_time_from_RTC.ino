@@ -33,7 +33,7 @@ int status = WL_IDLE_STATUS;
 RTCZero rtc;
 
 // change this to adapt it to your time zone: GMT + 1 = CET
-const short int GMT = 1;
+const short int TIME = 1;
 
 void printData() {
   Serial.println("Board Information:");
@@ -68,16 +68,18 @@ void print2digits(int number) {
 }
 
 void printDate() {
-  Serial.print(rtc.getDay());
+  print2digits(rtc.getDay());
   Serial.print("/");
-  Serial.print(rtc.getMonth());
+  
+  print2digits(rtc.getMonth());
   Serial.print("/");
+  
   Serial.print(rtc.getYear());
   Serial.print(" ");
 }
 
 void printTime() {
-  print2digits(rtc.getHours() + GMT);
+  print2digits(rtc.getHours());
   Serial.print(":");
   
   print2digits(rtc.getMinutes());
@@ -126,7 +128,6 @@ void setup() {
   do {
     epoch = WiFi.getTime();
     numberOfTries++;
-
   }
 
   while ((epoch == 0) && (numberOfTries < maxTries));
@@ -134,18 +135,31 @@ void setup() {
   if (numberOfTries == maxTries) {
     Serial.print("NTP unreachable!!");
     while (1);
-  }
-
-  else {
-
-    Serial.print("Epoch received: ");
-
-    Serial.println(epoch);
-
+  } else {
     rtc.setEpoch(epoch);
 
+    Serial.print("Epoch received: ");
+    Serial.println(epoch);
     Serial.println();
+  }
 
+  // add the TIME constant to the hours
+  // with TIME = 1, it will become CET: GTM + 1
+  // with TIME = 2, it will become CEST: GTM + 2
+  rtc.setHours(rtc.getHours() + TIME);
+
+  // the board ask the hours in GTM and then add the TIME constant
+  // if this new value is major than 23, evaluate the right hours value (from 0 to 23)
+  if(rtc.getHours() > 23) {
+    rtc.setHours(rtc.getHours() - 24);
+    rtc.setDay(rtc.getDay() + 1);
+  } else if (rtc.getHours() < 0) {
+    // all rtc's methods only accepts 'byte' as parameter(s), which are equal to 'unsigned char'
+    // it is no possible to have negative time (GTM - TIME = negative number)
+    
+    // rtc.setHours(24 - TIME);
+    // you could also check for the day not to be 0th of the month
+    // rtc.setDay(rtc.getDay() - 1);
   }
 }
 
