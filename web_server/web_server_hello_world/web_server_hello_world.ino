@@ -1,7 +1,33 @@
 /*
  * Web Server Hello World
  * 
+ * The code shows the easiest way to interact with the board using HTTP.
+ * The server uses TCP, but since HTTP is build on top of TCP, it can render HTML pages.
+ * 
+ * Each line in the HTTP request is terminated by a CR, carriage return, character ('\r') and
+ * a LF, line feed, character ('\n'). The end of the request can be determined by 2 sets of
+ * those sequences: '\r\n\r\n'.
+ * 
+ * The 'client' methods are:
+ * - client.connected()
+ * check if the data is connected, and there is data to read
+ * 
+ * - client.available()
+ * get the number of bytes available for reading (so there must be data to read)
+ * 
+ * - client.read()
+ * read one byte from the incoming data (the HTTP request sent by the client)
+ * 
+ * - client.print() & client.println()
+ * send data to the client, building a proper HTTP response
+ *  
+ * - client.stop()
+ * end the connection
+ * 
  * Reference: https://flaviocopes.com/arduino-webserver/
+ * Docs:
+ * - CR: https://www.asciihex.com/character/control/13/0x0D/cr-carriage-return
+ * - LF: https://www.asciihex.com/character/control/10/0x0A/lf-line-feed
 */
 #include <SPI.h>
 #include <WiFiNINA.h>
@@ -10,6 +36,7 @@
 // Wifi radio's status
 int status = WL_IDLE_STATUS;
 
+// TCP server on port 80
 WiFiServer server(80);
 
 void printData() {
@@ -65,35 +92,45 @@ void setup() {
 
   printData();
 
+  
+  // initialize the TCP server (on port 80)
   server.begin();
 }
 
 void loop() {
+  // listen for client connections
+  // 'available()' method of 'server' listens for incoming clients
   WiFiClient client = server.available();
 
-  if(client) {
-    char one;
-    char two;
-
-    while(client.connected()) {
-      if(client.available() {
+  if (client) {
+    // if you reach this point, it means there is an HTTP client connected
+    
+    String line = "";
+    while (client.connected()) {
+      if (client.available()) {
         char c = client.read();
         Serial.write(c);
 
-        if(one == '\n' && two == '\r' c == '\n') {
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-Type: text/html");
-          client.println("Connection: close");
-          client.println();
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          client.println("<h1>Hello World</h1>");
-          client.println("</html>");
-          break;
+        if (c != '\n' && c != '\r') {
+          line += c;
         }
 
-        one = two;
-        two = c;
+        if (c == '\n') {
+          if (line.length() == 0) {
+            // the HTML page you want to show to the client
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-Type: text/html");
+            client.println("Connection: close");
+            client.println();
+            client.println("<!DOCTYPE HTML>");
+            client.println("<html>");
+            client.println("<h1>Hello World</h1>");
+            client.println("</html>");
+            break;
+          } else {
+            line = "";
+          }
+        }
       }
     }
 
