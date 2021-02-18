@@ -1,6 +1,6 @@
 /*
  * Attack a potentiometer to Analog Pin A0.
- * This code evaluates the voltage (from 0V to 5V) that the board recive and interprets as a value from 0 to 1023.
+ * This code evaluates the voltage (from 0V to 5V) that the board receive and interprets as a value from 0 to 1023.
  * 
  * The 'map()' function can only be used to rescale analog value to the int or long data types but, since
  * the volga value is a floating point number, you need to use the 'floatMap' function.

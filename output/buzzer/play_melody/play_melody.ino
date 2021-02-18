@@ -1,7 +1,7 @@
 /*
  * Play Melody
  * 
- * Using all the constants made fot the notes (inside "pitches.h"), you can create the melody you want.
+ * Using all the constants made fot the notes (inside "musical-notes.h"), you can create the melody you want.
  * Assuming the base time of 4/4, the notes are:
  * - whole note -------> 1000 / 1 = 1000
  * - half note --------> 1000 / 2 = 500
@@ -22,7 +22,7 @@
  * Reference: https://www.arduino.cc/en/Tutorial/BuiltInExamples/toneMelody
  * BPM to sec: https://toolstud.io/music/bpm.php
  */
-#include "pitches.h"
+#include "musical-notes.h"
 
 // global variables
 unsigned const int MAX_NOTES = 100;
