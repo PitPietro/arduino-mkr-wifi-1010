@@ -36,9 +36,10 @@ To allow a better readability of the repository, below is shown all the code fol
 
 ### bot :robot:
 
-#### Discord
+#### .../Discord
 
-##### discord_hello_world
+##### .../.../discord_hello_world
+`cd bot/Discord/discord_hello_world`
 
 It contains a simple Discord Bot. The header comment should be enough exhaustive, but let's add some images. 
 
@@ -118,7 +119,7 @@ Test the SR04 sensor.
 
 `cd input/potentiometer/map_value`
 
-Map the value of the potentiometer. It is received as analog input from the board, by means its values are between `0` and `1023` (10 bits $ = 2^{10} = 1024$). An RGB LED needs values  between `0` and `255` (8 bits $= 2^8 = 256$). To allow a potentiometer to control a slice of an RGB LED, you need to map the potentiometer values using precisely the [map()](https://www.arduino.cc/reference/en/language/functions/math/map/) Arduino function as follow:
+Map the value of the potentiometer. It is received as analog input from the board, by means its values are between `0` and `1023` (10 bits = 2<sup>10</sup> = 1024). An RGB LED needs values  between `0` and `255` (8 bits = 2<sup>8</sup> = 256). To allow a potentiometer to control a slice of an RGB LED, you need to map the potentiometer values using precisely the [map()](https://www.arduino.cc/reference/en/language/functions/math/map/) Arduino function as follow:
 
 **1- Syntax**
 
