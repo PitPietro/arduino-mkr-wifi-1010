@@ -32,76 +32,9 @@ Logout and then log back in for the group changes to take effect (or just `resta
 
 ## Project Folders
 
-To allow a better readability of the repository, below is shown all the code folder by folder.
+To allow a better readability of the repository, below is shown all the code folder by folder:
+- [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
 
-### bot :robot:
-
-#### .../Discord
-
-##### .../.../discord_hello_world
-`cd bot/Discord/discord_hello_world`
-
-It contains a simple Discord Bot. The header comment should be enough exhaustive, but let's add some images. 
-
-Open your server and go to `Server Settings > Integrations > Webhooks`:
-
-![bot img 1](./docs/discord_hello_world_1.png)
-
-
-
-In my case, I called the bot as the famous musician  **John Bon Jovi**
-
-![bot img 2](./docs/discord_hello_world_2.png)
-
-Press on `Copy Webhook URL` and create the file `arduino_secrets.h` as follow:
-
-```bash
-// 1. Webhook URL without the starting 'https://discordapp.com'
-#define SECRET_WEBHOOK "/api/webhooks/..." // replace all the content between the quotes
-
-// 2. enable ("true") or disable ("false") text on speech
-#define SECRET_TTS "true"
-
-// 3. WiFi name of the network the Arduino MKR have to connect to surf the Internet
-#define WIFI_SSID "" // inside the quotes
-
-// 4. WiFi password of the network the Arduino MKR have to connect to surf the Internet
-#define WIFI_PWD "" // inside the quotes
-
-```
-
-
-
-#### Telegram
-
-##### UniversalTelegramBot
-
-###### echo_bot
-
-`cd bot/Telegram/UniversalTelegramBot/echo_bot/`
-
-Telegram bot which replies to all the text message you send to him.
-
-###### LED_on_off_bot
-
-`cd bot/Telegram/UniversalTelegramBot/LED_on_off_bot`
-
-Switch ON or OFF the built-in LED of the board.
-
-###### reply_keyboard_markup
-
-`cd bot/Telegram/UniversalTelegramBot/reply_keyboard_markup`
-
-Use the Telegram's **keyboard markup** to communicate with the bot. 
-
-###### send_logo_photo_from_URL
-
-`cd bot/Telegram/UniversalTelegramBot/send_logo_photo_from_URL`
-
-The bot uses an `HTTP` connection to send a logo from those list:
-
-1. Arduino
-2. Raspberry PI
 
 ### input
 
