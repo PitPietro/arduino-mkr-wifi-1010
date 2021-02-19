@@ -34,57 +34,7 @@ Logout and then log back in for the group changes to take effect (or just `resta
 
 To allow a better readability of the repository, below is shown all the code folder by folder:
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
-
-
-### input
-
-#### distance
-
-###### basic_SR04
-
-`cd input/distance/basic_SR04`
-
-Test the SR04 sensor.
-
-#### potentiometer
-
-##### map_value
-
-`cd input/potentiometer/map_value`
-
-Map the value of the potentiometer. It is received as analog input from the board, by means its values are between `0` and `1023` (10 bits = 2<sup>10</sup> = 1024). An RGB LED needs values  between `0` and `255` (8 bits = 2<sup>8</sup> = 256). To allow a potentiometer to control a slice of an RGB LED, you need to map the potentiometer values using precisely the [map()](https://www.arduino.cc/reference/en/language/functions/math/map/) Arduino function as follow:
-
-**1- Syntax**
-
-```bash
-map(value, fromLow, fromHigh, toLow, toHigh)
-```
-
-**2- Parameters**
-
-`value`: the number to map.
- `fromLow`: the lower bound of the value’s current range.
- `fromHigh`: the upper bound of the value’s current range.
- `toLow`: the lower bound of the value’s target range.
- `toHigh`: the upper bound of the value’s target range.
-
-**3- Returns**
-
-The mapped value.
-
-##### voltage_test
-
-`cd input/potentiometer/voltage_test`
-
-Evaluates the voltage (from `0V` to `5V`) that the board receive and interprets as a value from 0 to 1023.
-
-#### temperature
-
-##### basic_thermometer
-
-`cd input/temperature/basic_thermometer`
-
-A basic thermometer made using the TMP36 sensor.
+- [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
 
 ### MKR_SD_PROTO_SHIELD  :bar_chart:
 
