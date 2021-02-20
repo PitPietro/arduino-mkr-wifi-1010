@@ -35,38 +35,8 @@ Logout and then log back in for the group changes to take effect (or just `resta
 To allow a better readability of the repository, below is shown all the code folder by folder:
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
 - [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
-- [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD)
-
-### output
-
-#### buzzer
-
-##### buzzer_on_off
-
-`cd output/buzzer/buzzer_on_off`
-
-Test the buzzer my making "blink" it.
-
-##### play_melody
-
-`cd output/buzzer/play_melody`
-
-Play the melody you want by specifying the note (from the constants in `musical-notes.h`) and the length.
-Assuming the base time of 4/4, and that `1000 ms = 1 sec = 60 BPM` (Beats per Minutes), the notes' length are:
-
-- whole note -------> `1000 / 1 = 1000`
-- half note --------> `1000 / 2 = 500`
-- quarter note -----> `1000 / 4 = 250`
-- eighth note ------> `1000 / 8 = 125`
-- sixteenth note ---> `1000 / 16 = 62.5`
-- thirty-two note --> `1000 / 32 = 32.25`
-
-Notes with dot:
-- dotted whole note ------> 3/2 <---> `(1000 / 1) + (1000 / 2) = 1000 / (2/3) = 1500`
-- dotted half note -------> 4/3 <---> `(1000 / 2) + (1000 / 4) = 1000 / (4/3) = 750`
-- dotted quarter note ----> 6/16 <---> `(1000 / 4) + (1000 / 8) = 1000 / (8/3) = 375`
-- dotted eighth note -----> 6/32 <---> `(1000 / 8) + (1000 / 16) = 1000 / (16/3) = 187.5`
-- dotted sixteenth note --> 3/32 <---> `(1000 / 16) + (1000 / 32) = 1000 / x = 93.75`
+- [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD-folder)
+- [output](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder)
 
 ### serial-communication
 
