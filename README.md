@@ -35,20 +35,7 @@ Logout and then log back in for the group changes to take effect (or just `resta
 To allow a better readability of the repository, below is shown all the code folder by folder:
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
 - [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
-
-### MKR_SD_PROTO_SHIELD  :bar_chart:
-
-#### ASCII_logo_download
-
-`cd MKR_SD_PROTO_SHIELD/ASCII_logo_download`
-
-The board establish a connection to the Arduino server and downloads the ASCII logo.
-
-#### card_info
-
-`cd MKR_SD_PROTO_SHIELD/card_info`
-
-Print on **Serial Monitor** the information about the **SD card** status. 
+- [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD)
 
 ### output
 
