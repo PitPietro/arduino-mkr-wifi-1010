@@ -37,27 +37,8 @@ To allow a better readability of the repository, below is shown all the code fol
 - [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
 - [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD-folder)
 - [output](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder)
+- [serial-communication](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/serial-communication-folder)
 
-### serial-communication
-
-#### ASCII_table
-
-`cd serial-communication/ASCII_table`
-
-The ASCII table was inspired by [Tutorial/ASCIITable](http://www.arduino.cc/en/Tutorial/ASCIITable) from the official website of Arduino.
-The first visible ASCII element is the exclamation mark `!`, which is associated to the number 33
-
-```c
-// those declarations are equivalent
-char character = 33;
-char character = '!';
-```
-
-#### sizeof_test
-
-`cd serial-communication/sizeof_test`
-
-It simply tests the functionality of [sizeof](https://www.arduino.cc/reference/en/language/variables/utilities/sizeof/) Arduino function. 
 
 ## Libraries
 ### WiFiNINA
