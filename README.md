@@ -33,8 +33,9 @@ Logout and then log back in for the group changes to take effect (or just `resta
 ## Project Folders
 
 To allow a better readability of the repository, below is shown all the code folder by folder:
-- [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
-- [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
+### 1~ [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
+
+### 2~ [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
 
 ### MKR_SD_PROTO_SHIELD  :bar_chart:
 
