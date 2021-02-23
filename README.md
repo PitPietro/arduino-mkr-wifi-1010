@@ -31,20 +31,11 @@ sudo usermod -a -G dialout $USER
 Logout and then log back in for the group changes to take effect (or just `restart` the machine).
 
 ## Project Folders
-
-To allow a better readability of the repository, below is shown all the code folder by folder:
-<<<<<<< HEAD
-### 1~ [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
-
-### 2~ [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
-=======
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
 - [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
 - [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD-folder)
 - [output](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder)
 - [serial-communication](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/serial-communication-folder)
->>>>>>> 43d4f62ad8dbd2247cb6975d1f0935de0db76d12
-
 
 ## Libraries
 ### WiFiNINA
