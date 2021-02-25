@@ -20,7 +20,7 @@ Caused by: jssc.SerialPortException: Port name - /dev/ttyACM0; Method name - ope
 
 You need to add the execution permission on the port:
 ```bash
-sudo chmod 666 ttyACM0
+cd && sudo chmod 666 dev/ttyACM0
 ```
 
 You could also need to add yourself to the `dialout` group:
@@ -28,7 +28,7 @@ You could also need to add yourself to the `dialout` group:
 sudo usermod -a -G dialout $USER
 ```
 
-Logout and then log back in for the group changes to take effect (or just `restart` the machine).
+**Please Note**: Logout and then log back in for the group changes to take effect (or just `sudo restart` the machine).
 
 ## Project Folders
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
