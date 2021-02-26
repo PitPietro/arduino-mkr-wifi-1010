@@ -6,6 +6,27 @@
 
 Here are some problems I faced up during the develop of Arduino code on my Ubuntu Linux machine.
 
+### Install Arduino IDE
+Go to the official Arduino website, in the [software](https://www.arduino.cc/en/software) section and download the version labelled Linux 32 bits (or 64 bits, if your machine supports it).
+
+Open a terminal window:
+```bash
+# ensure you are in the home directory
+cd ~
+# navigate to Downloads
+cd Downloads
+# replace 'XXX' with the correct version number
+# extract the contents of the downloaded file
+tar -xvf arduino-XXX-linuxarm.tar.xz
+# remove the archive
+rm -rfv arduino-XXX-linuxarm.tar.xz
+# move the extracted folder from home/$USER/Downloads to /opt
+sudo mv arduino-XXX /opt
+# complete the installation
+sudo /opt/arduino-XXX/install.sh
+```
+
+
 ### Open the serial port
 
 If you try to load a program that requires **Serial Port** and the IDE throws an error like the following:
