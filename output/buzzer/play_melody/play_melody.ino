@@ -11,6 +11,7 @@
  * Wiki: https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder
  */
 #include "musical-notes.h"
+#include "musical-constants.h"
 
 // global constants
 unsigned const short int DEFAULT_BPM = 60;
@@ -19,24 +20,6 @@ unsigned const char ROWS = 2;
 
 // connect the buzzer to pin 3
 unsigned const char buzzer = 3;
-
-// notes constants
-const float WHOLE = 1;
-const float HALF = 0.5; 
-const float QUARTER = 0.25;
-const float EIGHTH = 0.125;
-const float SIXTEENTH = 0.0625;
-const float THIRTY_SECOND = 0.03125;
-const float SIXTY_FOURTH = 0.015625;
-
-// dotted constants starts with capital 'D'
-const float D_WHOLE = 1.5;
-const float D_HALF = 0.75; 
-const float D_QUARTER = 0.375;
-const float D_EIGHTH = 0.1875;
-const float D_SIXTEENTH = 0.09375;
-const float D_THIRTY_SECOND = 0.046875;
-const float D_SIXTY_FOURTH = 0.023438;
 
 // notes in the melody
 // note durations: 4 = quarter note, 8 = eighth note, etc.
