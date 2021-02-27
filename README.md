@@ -4,14 +4,14 @@ Please, refer to the official Arduino website to [getting started](https://www.a
 
 ## Table of contents
 
-- [1.0 Setting Up Arduino on Linux]()
-  - [1.1 Install Arduino IDE]()
-  - [1.2 Open the serial port]()
-- [2.0 Structure](#structure)
-- [3.0 Shields](#shields)
-  - [3.1 MKR SD Proto Shield]()
-  - [3.2 MKR ETH]()
-- [4.0 Reference](#reference)
+- [1.0 Setting Up Arduino on Linux](10-setting-up-arduino-on-linux)
+  - [1.1 Install Arduino IDE](11-install-arduino-ide)
+  - [1.2 Open the serial port](12-open-the-serial-port)
+- [2.0 Structure](#20-structure)
+- [3.0 Shields](#30-shields)
+  - [3.1 MKR SD Proto Shield](31-mkr-sd-proto-shield)
+  - [3.2 MKR ETH](32-mkr-eth)
+- [4.0 Reference](#40-reference)
 
 ## 1.0 Setting Up Arduino on Linux
 
@@ -78,7 +78,7 @@ I made a [wiki page](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki) fo
 
 In this section, I'll show you the shields used in some projects.
 
-### 3.1 SD
+### 3.1 MKR SD Proto Shield
 
 ![MKR SD Proto Shield](https://store-cdn.arduino.cc/uni/catalog/product/cache/1/image/500x375/f8876a31b63532bbba4e781c30024a0a/t/s/tsx00004_iso.jpg)
 
