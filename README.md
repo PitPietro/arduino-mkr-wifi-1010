@@ -1,12 +1,23 @@
 # Arduino MKR WiFi 1010
 
-[Getting started](https://www.arduino.cc/en/Guide/MKRWiFi1010)
+Please, refer to the official Arduino website to [getting started](https://www.arduino.cc/en/Guide/MKRWiFi1010) with MKR WiFi 1010.
 
-## Setting Up Arduino on Linux
+## Table of contents
+
+- [1.0 Setting Up Arduino on Linux]()
+  - [1.1 Install Arduino IDE]()
+  - [1.2 Open the serial port]()
+- [2.0 Structure](#structure)
+- [3.0 Shields](#shields)
+  - [3.1 MKR SD Proto Shield]()
+  - [3.2 MKR ETH]()
+- [4.0 Reference](#reference)
+
+## 1.0 Setting Up Arduino on Linux
 
 Here are some problems I faced up during the develop of Arduino code on my Ubuntu Linux machine.
 
-### Install Arduino IDE
+### 1.1 Install Arduino IDE
 Go to the official Arduino website, in the [software](https://www.arduino.cc/en/software) section and download the version labelled Linux 32 bits (or 64 bits, if your machine supports it).
 
 Open a terminal window:
@@ -27,7 +38,7 @@ sudo /opt/arduino-XXX/install.sh
 ```
 
 
-### Open the serial port
+### 1.2 Open the serial port
 
 If you try to load a program that requires **Serial Port** and the IDE throws an error like the following:
 
@@ -51,23 +62,35 @@ sudo usermod -a -G dialout $USER
 
 **Please Note**: Logout and then log back in for the group changes to take effect (or just `sudo restart` the machine).
 
-## Project Folders
+## 2.0 Structure
+
+I made a [wiki page](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki) for all the folders of the repository.
+
 - [bot :robot:](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/Bot-folder)
 - [input](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/input-folder)
 - [MKR_SD_PROTO_SHIELD](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/MKR_SD_PROTO_SHIELD-folder)
 - [output](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder)
 - [serial-communication](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/serial-communication-folder)
 
-## Libraries
-### WiFiNINA
-[WiFiNINA](https://www.arduino.cc/en/Reference/WiFiNINA) library allows Arduino MKR WiFi 1010 to be able to connect to a WiFi network. If you want to connect the board to a *wired network* using an Ethernet cable, you need to buy the [Arduino MKR ETH Shield](https://store.arduino.cc/arduino-mkr-eth-shield) from the official [Arduino Store](https://store.arduino.cc/).
 
-To install **WiFiNINA** library, navigate to:
-1. **Tools**
-2. **Manage Libraries**
-3. search for **WiFiNINA**
-4. click on the **Install** button on the right bottom corner.
 
-## Reference
+## 3.0 Shields
+
+In this section, I'll show you the shields used in some projects.
+
+### 3.1 SD
+
+![MKR SD Proto Shield](https://store-cdn.arduino.cc/uni/catalog/product/cache/1/image/500x375/f8876a31b63532bbba4e781c30024a0a/t/s/tsx00004_iso.jpg)
+
+Thanks to the [MKR SD Proto Shield](https://store.arduino.cc/mkr-sd-proto-shield) you can add to your project an SD slot and a prototyping area.
+
+
+### 3.2 MKR ETH
+
+![Arduino MKR ETH Shield image](https://store-cdn.arduino.cc/uni/catalog/product/cache/1/image/500x375/f8876a31b63532bbba4e781c30024a0a/a/s/asx00006_iso_1_1.jpg)
+
+If you want to connect the board to a *wired network* using an Ethernet cable, you need to buy the [Arduino MKR ETH Shield](https://store.arduino.cc/arduino-mkr-eth-shield) from the official [Arduino Store](https://store.arduino.cc/).
+
+## 4.0 Reference
 - [Changing permissions on serial port](https://askubuntu.com/questions/58119/changing-permissions-on-serial-port)
 - [emoji-cheat-sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)
