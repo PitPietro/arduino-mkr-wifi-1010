@@ -4,13 +4,13 @@ Please, refer to the official Arduino website to [getting started](https://www.a
 
 ## Table of contents
 
-- [1.0 Setting Up Arduino on Linux](10-setting-up-arduino-on-linux)
-  - [1.1 Install Arduino IDE](11-install-arduino-ide)
-  - [1.2 Open the serial port](12-open-the-serial-port)
+- [1.0 Setting Up Arduino on Linux](#10-setting-up-arduino-on-linux)
+  - [1.1 Install Arduino IDE](#11-install-arduino-ide)
+  - [1.2 Open the serial port](#12-open-the-serial-port)
 - [2.0 Structure](#20-structure)
 - [3.0 Shields](#30-shields)
-  - [3.1 MKR SD Proto Shield](31-mkr-sd-proto-shield)
-  - [3.2 MKR ETH](32-mkr-eth)
+  - [3.1 MKR SD Proto Shield](#31-mkr-sd-proto-shield)
+  - [3.2 MKR ETH](#32-mkr-eth)
 - [4.0 Reference](#40-reference)
 
 ## 1.0 Setting Up Arduino on Linux
