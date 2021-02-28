@@ -41,6 +41,61 @@ double base_base[2][MAX_NOTES] = {
   {QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, END}
 };
 
+
+/*
+ * White Coral Bells from "Berklee Basic Guitar part 1" by William Leavitt
+ * 
+ * The melody's arrays wrap at each bar to allow a better code readability
+*/
+double white_coral_bells[2][MAX_NOTES] {
+  {
+    C4, B3, A3,        //  1
+    G3, E3,            //  2
+    F3, A3, G3, F3,    //  3
+    E3,                //  4
+    C3, E3, D3, F3,    //  5
+    E3, G3, C4, E4,    //  6
+    D4, B3,            //  7
+    C4, G3, G3, G3,    //  8
+    C4, B3, A3,        //  9 = 1
+    G3, E3,            // 10 = 2
+    F3, A3, G3, F3,    // 11 = 3
+    E3,                // 12 = 4
+    C3, E3, D3, F3,    // 13 = 5
+    E3, G3, C4, E4,    // 14 = 6
+    D4, B3,            // 15 = 7
+    C4, G4, G4,        // 16
+    E4, C4, B3, D4,    // 17
+    C4, B3, A3, G3,    // 18
+    F3, G3, F3,        // 19
+    E3, G3, C3, PAUSE, // 20
+    END
+  },
+  {
+    HALF, QUARTER, QUARTER,             //  1
+    D_HALF, QUARTER,                    //  2
+    QUARTER, QUARTER, QUARTER, QUARTER, //  3
+    WHOLE,                              //  4
+    QUARTER, QUARTER, QUARTER, QUARTER, //  5
+    QUARTER, QUARTER, QUARTER, QUARTER, //  6
+    HALF, HALF,                         //  7
+    QUARTER, QUARTER, QUARTER, QUARTER, //  8
+    HALF, QUARTER, QUARTER,             //  9 = 1
+    D_HALF, QUARTER,                    // 10 = 2
+    QUARTER, QUARTER, QUARTER, QUARTER, // 11 = 3
+    WHOLE,                              // 12 = 4
+    QUARTER, QUARTER, QUARTER, QUARTER, // 13 = 5
+    QUARTER, QUARTER, QUARTER, QUARTER, // 14 = 6
+    HALF, HALF,                         // 15 = 7
+    QUARTER, HALF, QUARTER,             // 16
+    QUARTER, QUARTER, QUARTER, QUARTER, // 17
+    QUARTER, QUARTER, QUARTER, QUARTER, // 18
+    QUARTER, HALF, QUARTER,             // 19
+    QUARTER, QUARTER, QUARTER, PAUSE,   // 20
+    END
+  }
+};
+
 /*
  * Translate BPM to the milliseconds of four musical measures
  *
@@ -141,7 +196,7 @@ void setup() {
   while (!Serial);
   
   // playMelody(base_melody);
-  playMelody(happyBirthday);
+  playMelody(white_coral_bells);
   // playMelody(base_base);
 }
 
