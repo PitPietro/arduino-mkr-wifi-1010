@@ -25,18 +25,18 @@ unsigned const char buzzer = 3;
 // note durations: 4 = quarter note, 8 = eighth note, etc.
 
 // Please Note: finish the melody with 'END' in both the sub-arrays
-int base_melody[ROWS][MAX_NOTES] = {
+double base_melody[ROWS][MAX_NOTES] = {
   {C4, G3, G3, A3, G3, 0, B3, C4, END},
   {QUARTER, EIGHTH, EIGHTH, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, END}
 };
 
 // G3 (3rd string - guidar)
-float happyBirthday[ROWS][MAX_NOTES] = {
+double happyBirthday[ROWS][MAX_NOTES] = {
   {PAUSE, G3, G3, A3, G3, C4, B3, G3, G3, A3, G3, D4, C4, G3, G3, G4, E4, C4, B3, A3, F4, F4, E4, C4, D4, C4, END},
   {HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, END}
 };
 
-float base_base[2][MAX_NOTES] = {
+double base_base[2][MAX_NOTES] = {
   {C3, D3, E3, F3, G3, A3, B3, C4, C4, B3, A3, G3, F3, E3, D3, C3, END},
   {QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, END}
 };
@@ -46,8 +46,8 @@ float base_base[2][MAX_NOTES] = {
  *
  * i.e. 60 BPM = 1 second * 4 musical measures = 4 seconds = 4'000 ms 
 */
-float BPMToMillisec(int bpm) {
-    float beat_per_sec = (float)bpm / 60;
+double BPMToMillisec(int bpm) {
+    float beat_per_sec = (double)bpm / 60;
     float beat_per_millisec = beat_per_sec * 1000;    
     return beat_per_millisec * 4;
 }
@@ -60,7 +60,7 @@ float BPMToMillisec(int bpm) {
  * The melody must have END as the last element, it wouldn't be correct
  * to stop count the melody dimension when there's a PAUSE (or more pauses)
  */
-int melodyDimension(float melody[2][MAX_NOTES]) {
+int melodyDimension(double melody[2][MAX_NOTES]) {
   // return the number of notes
   // both the 1st and the 2nd arrays must have the same lenght
 
@@ -85,7 +85,7 @@ int melodyDimension(float melody[2][MAX_NOTES]) {
   }
 }
 
-void playMelody(float melody[2][MAX_NOTES]) {
+void playMelody(double melody[2][MAX_NOTES]) {
   // melody contains the notes (in the 1st array) and the notes' duration (in the 2nd array)
   // iterate over the notes of the melody
 
@@ -100,12 +100,12 @@ void playMelody(float melody[2][MAX_NOTES]) {
     // int noteDuration = 1000 / melody[1][thisNote];
 
     // 4'000 ms = 4 seconds = 1 second * 4 musical measures = 60 BMP
-    float timeMillis = BPMToMillisec(DEFAULT_BPM);
-    float noteDuration = timeMillis * melody[1][thisNote];
+    double timeMillis = BPMToMillisec(DEFAULT_BPM);
+    double noteDuration = timeMillis * melody[1][thisNote];
 
     // some debugging info on the Serial Monitor
-    Serial.print(thisNote);
-    Serial.print(") ");
+    // Serial.print(thisNote);
+    // Serial.print(") ");
     Serial.print(melody[0][thisNote]);
     Serial.print(" --> note duration: ");
     Serial.print(noteDuration);
@@ -113,13 +113,21 @@ void playMelody(float melody[2][MAX_NOTES]) {
     Serial.print(timeMillis);
     Serial.print(" * ");
     Serial.println(melody[1][thisNote]);
-    
+
+    // add a pause in milliseconds to avoid listen the melody like an always continuous note that only changes tonality (frequency)
+    int pauseBetweenNotes = 10;
+
+    // start the tone playing
     tone(buzzer, melody[0][thisNote]);
-    
-    delay(noteDuration);
+
+    // play the current note for the given duration subtracting 'pauseBetweenNotes'
+    delay(noteDuration-pauseBetweenNotes);
 
     // stop the tone playing
     noTone(buzzer);
+
+    // wait for 'pauseBetweenNotes' to avoid going out of time
+    delay(pauseBetweenNotes);
   }
 }
 
