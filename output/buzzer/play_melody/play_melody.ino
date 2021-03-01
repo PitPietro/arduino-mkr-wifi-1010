@@ -9,7 +9,7 @@
  * 1) https://toolstud.io/music/bpm.php
  * 2) https://tomhess.net/Tools/DelayCalculator.aspx
  * Wiki: https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder
- */
+*/
 #include "musical-notes.h"
 #include "musical-constants.h"
 
@@ -36,9 +36,9 @@ double happyBirthday[ROWS][MAX_NOTES] = {
   {HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, QUARTER, HALF, D_EIGHTH, SIXTEENTH, QUARTER, QUARTER, QUARTER, HALF, END}
 };
 
-double base_base[2][MAX_NOTES] = {
-  {C3, D3, E3, F3, G3, A3, B3, C4, C4, B3, A3, G3, F3, E3, D3, C3, END},
-  {QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, QUARTER, END}
+double count_time[2][MAX_NOTES] = {
+  {C3, C3, C3, C3, END},
+  {QUARTER, QUARTER, QUARTER, QUARTER, END}
 };
 
 
@@ -195,7 +195,7 @@ void setup() {
   // wait for serial port to connect. Needed for native USB port only
   while (!Serial);
   
-  // playMelody(base_melody);
+  playMelody(count_time);
   playMelody(white_coral_bells);
   // playMelody(base_base);
 }

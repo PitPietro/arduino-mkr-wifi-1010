@@ -62,6 +62,8 @@ sudo usermod -a -G dialout $USER
 
 **Please Note**: Logout and then log back in for the group changes to take effect (or just `sudo restart` the machine).
 
+**Please Note**: If you accidentally stop the sketch from uploading, you just need to double click the reset button ([reference](https://forum.arduino.cc/index.php?topic=637912.0)).
+
 ## 2.0 Structure
 
 I made a [wiki page](https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki) for all the folders of the repository.
