@@ -6,7 +6,8 @@ Please, refer to the official Arduino website to [getting started](https://www.a
 
 - [1.0 Setting Up Arduino on Linux](#10-setting-up-arduino-on-linux)
   - [1.1 Install Arduino IDE](#11-install-arduino-ide)
-  - [1.2 Open the serial port](#12-open-the-serial-port)
+  - [1.2. Install Arduino IDE 2.0 Beta](#12-install-arduino-ide-20-beta)
+  - [1.3 Open the serial port](#13-open-the-serial-port)
 - [2.0 Structure](#20-structure)
 - [3.0 Shields](#30-shields)
   - [3.1 MKR SD Proto Shield](#31-mkr-sd-proto-shield)
@@ -17,7 +18,7 @@ Please, refer to the official Arduino website to [getting started](https://www.a
 
 Here are some problems I faced up during the develop of Arduino code on my Ubuntu Linux machine.
 
-### 1.1 Install Arduino IDE
+### 1.1 Install Arduino IDE 1.x
 Go to the official Arduino website, in the [software](https://www.arduino.cc/en/software) section and download the version labelled Linux 32 bits (or 64 bits, if your machine supports it).
 
 Open a terminal window:
@@ -37,8 +38,40 @@ sudo mv arduino-XXX /opt
 sudo /opt/arduino-XXX/install.sh
 ```
 
+### 1.2. Install Arduino IDE 2.0 Beta
 
-### 1.2 Open the serial port
+Download the Arduino IDE 2.0 from the official [software](https://www.arduino.cc/en/software#experimental-software) page.
+
+```bash
+# ensure you are in the home directory
+cd ~
+# navigate to Downloads
+cd Downloads
+# replace 'XXX' with the correct version number and OS architecture
+# extract the contents of the downloaded file
+unzip arduino-ide_XXX.zip
+# remove the archive
+rm -rfv arduino-ide_XXX.zip
+# move the extracted folder from home/$USER/Downloads to /opt
+sudo mv arduino-ide_XXX /opt
+# run the IDE
+sudo /opt/arduino-ide_XXX/arduino-ide
+
+# Moreover, hit Citrl + C to stop the execution of the IDE
+# back home
+cd ~
+# depending on your shell type, open the configuration file
+nano .bashrc
+
+# insert the following alias
+alias arduino-beta="cd && cd /opt/arduino-ide_2.0.0-beta.3_Linux_64bit/ && ./arduino-ide"
+# exit the terminal ì and open a brand new one
+arduino-beta
+```
+
+
+
+### 1.3 Open the serial port
 
 If you try to load a program that requires **Serial Port** and the IDE throws an error like the following:
 
