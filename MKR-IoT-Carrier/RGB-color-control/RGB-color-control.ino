@@ -10,6 +10,19 @@ MKRIoTCarrier carrier;
 
 uint8_t r = 0, g = 0, b = 0;
 
+/*
+  * TODO: each of the 5 touch buttons light up all the LEDs of a color of the rainbow:
+  * 1. red
+  * 2. yellow
+  * 3. green
+  * 4. indaco
+  * 5. violette
+  *
+  * Write on the screen the name of the color with that name as background color
+  *
+*/
+
+
 void setup() {
   CARRIER_CASE = false;
   
@@ -57,7 +70,7 @@ void setup() {
 
   // wait for a second
   delay(500);
-  */  
+  */
 }
 
 // rainbow loop
