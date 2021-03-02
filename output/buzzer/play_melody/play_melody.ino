@@ -16,7 +16,7 @@
 
 // global constants
 unsigned const short int DEFAULT_BPM = 60;
-unsigned const int MAX_NOTES = 100;
+unsigned const int MAX_NOTES = 150;
 unsigned const char ROWS = 2;
 
 // connect the buzzer to pin 3
@@ -148,8 +148,8 @@ double long_long_ago_third[2][MAX_NOTES]{
     C4, B3, A3, G3,     // 28 = 4
     B3, A3, G3,         // 29 = 5
     F3, G3, F3,         // 30
-    M3, G3, A3, F3,     // 31
-    M3, G3, C4,         // 32
+    E3, G3, A3, F3,     // 31
+    E3, G3, C4,         // 32
     END
   },
   {
@@ -292,8 +292,9 @@ void setup() {
     ;
 
   playMelody(count_time);
-  playMelody(white_coral_bells);
+  // playMelody(white_coral_bells);
   // playMelody(base_base);
+  playMelody(long_long_ago_third);
 }
 
 void loop() {
