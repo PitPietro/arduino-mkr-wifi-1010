@@ -1,64 +1,70 @@
-/**************************************************************************
-  This example shows how to compose images from bitmaps
-
-  We have used this tool to convert the .bmp to cpp
-  https://javl.github.io/image2cpp/
-  Thanks!
-  
- **************************************************************************/
-
 /*
- * Compose Image from Bitmaps
+* Fade RBG LEDs
 */
 
 #include <Arduino_MKRIoTCarrier.h>
-
-// save the images code there
-#include "images.h"
-
 MKRIoTCarrier carrier;
 
-uint16_t custom_delay = 4000;
+
+uint32_t orange = carrier.leds.Color(50, 242, 0);
 
 void setup() {
+  Serial.begin(9600);
   CARRIER_CASE = false;
   carrier.begin();
-  carrier.display.setRotation(0);
 
   uint16_t time = millis();
   carrier.display.fillScreen(ST77XX_BLACK);
   time = millis() - time;
+
+  carrier.leds.fill(orange, 0, 5);
+  carrier.leds.setBrightness(15);
+  carrier.leds.show();
 }
 
+int i = 0;
+int ledC = 0;
+int ledA = 0;
+
 void loop() {
-  // Arduino logo
   carrier.display.fillScreen(ST77XX_BLACK);
   drawArduino(0x04B3);
-  delay(custom_delay);
-
-  // Arduino Explore IoT KIT logo on black background
+  fadeLoop();
   carrier.display.fillScreen(ST77XX_BLACK);
   drawEIoT();
-  delay(custom_delay);
-
-  // fill screen to override the previous image
+  fadeLoop();
+  
   carrier.display.fillScreen(ST77XX_WHITE);
-  // black Arduino logo on white background
   drawArduino(0x0000);
-  delay(custom_delay);
-
-  // orange Arduino logo on white background
+  fadeLoop();
+  
   drawArduino(0xF324);
-  delay(custom_delay);
-
-  // teal Arduino logo on white background
+  fadeLoop();
   drawArduino(0x04B3);
-  delay(custom_delay);
+  fadeLoop();
 
-  // Arduino Explore IoT KIT logo on white background
   carrier.display.fillScreen(ST77XX_WHITE);
   drawEIoT();
-  delay(custom_delay);
+  fadeLoop();
+}
+
+//Fading Orange loop
+void fadeLoop() {
+  carrier.leds.fill(orange, ledA, ledC);
+  for ( i = 0; i < 125; i++) {
+    carrier.leds.setBrightness(i);
+    carrier.leds.show();
+    delay(10);
+  }
+
+  for ( i = 125; i > -1; i--) {
+    carrier.leds.setBrightness(i);
+    carrier.leds.show();
+    delay(10);
+  }
+  carrier.leds.clear();
+  delay(500);
+
 }
 
 //Compose the differentn parts of the image
