@@ -23,6 +23,8 @@ void setup() {
   // initialize the MKR IoT Carrier and output any errors in the serial monitor
   carrier.begin();
   carrier.display.setRotation(0);
+
+  printTemperature();
 }
 
 void loop() {
@@ -36,11 +38,11 @@ void loop() {
   // print the sensor values
   Serial.print("Temperature = ");
   Serial.print(temperature);
-  Serial.println(" °C");	
+  Serial.println(" °C");  
   Serial.print("Humidity = ");
   Serial.print(humidity);
   Serial.println(" %");
-	
+  
   // print out values if the buttons are pressed
   if (carrier.Button0.onTouchDown()) {
     printTemperature();
@@ -62,7 +64,7 @@ void printTemperature() {
 
   //sets position for printing (x and y)
   carrier.display.setCursor(30, 110); 
-	
+  
   carrier.display.print("Temp: ");
   carrier.display.print(temperature);
   carrier.display.println(" C");
@@ -72,7 +74,7 @@ void printHumidity() {
   // configuring display, setting background color, text size and text color
   // blue background
   carrier.display.fillScreen(ST77XX_BLUE);
-	// white text
+  // white text
   carrier.display.setTextColor(ST77XX_WHITE);
   // medium sized text
   carrier.display.setTextSize(2);

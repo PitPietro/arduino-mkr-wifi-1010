@@ -5,8 +5,7 @@
 #include <Arduino_MKRIoTCarrier.h>
 MKRIoTCarrier carrier;
 
-
-uint32_t orange = carrier.leds.Color(50, 242, 0);
+#define MAX 4
 
 void setup() {
   Serial.begin(9600);
@@ -16,10 +15,6 @@ void setup() {
   uint16_t time = millis();
   carrier.display.fillScreen(ST77XX_BLACK);
   time = millis() - time;
-
-  carrier.leds.fill(orange, 0, 5);
-  carrier.leds.setBrightness(15);
-  carrier.leds.show();
 }
 
 int i = 0;
@@ -27,30 +22,23 @@ int ledC = 0;
 int ledA = 0;
 
 void loop() {
-  carrier.display.fillScreen(ST77XX_BLACK);
-  drawArduino(0x04B3);
-  fadeLoop();
-  carrier.display.fillScreen(ST77XX_BLACK);
-  drawEIoT();
-  fadeLoop();
+  uint32_t red = carrier.leds.Color(0, 255, 0);
+  uint32_t green = carrier.leds.Color(255, 0, 0);
+  uint32_t blue = carrier.leds.Color(0, 0, 255);
+  uint32_t orange = carrier.leds.Color(50, 242, 0);  
   
-  carrier.display.fillScreen(ST77XX_WHITE);
-  drawArduino(0x0000);
-  fadeLoop();
-  
-  drawArduino(0xF324);
-  fadeLoop();
-  drawArduino(0x04B3);
-  fadeLoop();
+  uint32_t colors[MAX] = {red, green, blue, orange};
 
-  carrier.display.fillScreen(ST77XX_WHITE);
-  drawEIoT();
-  fadeLoop();
+  int c;
+  for(c = 0; c < MAX; c++) {
+    fadeLoop(colors[c]);
+  }
 }
 
-//Fading Orange loop
-void fadeLoop() {
-  carrier.leds.fill(orange, ledA, ledC);
+// Fading a given color loop
+void fadeLoop(uint32_t color) {
+
+  carrier.leds.fill(color, ledA, ledC);
   for ( i = 0; i < 125; i++) {
     carrier.leds.setBrightness(i);
     carrier.leds.show();
@@ -62,22 +50,7 @@ void fadeLoop() {
     carrier.leds.show();
     delay(10);
   }
+  
   carrier.leds.clear();
   delay(500);
-
-}
-
-//Compose the differentn parts of the image
-void drawEIoT() {
-  carrier.display.drawBitmap(44, 25, ArduinoLogo, 152, 72, 0x04B3);
-  carrier.display.drawBitmap(48, 110, ArduinoText, 144, 23, 0x04B3);
-  carrier.display.drawBitmap(0, 150, ExploreFrame, 240, 75, 0xF324);
-  carrier.display.drawBitmap(0, 150, ExplreIoTKittext, 240, 75, 0x04B3);
-  carrier.display.drawBitmap(0, 150, ExploreIoTtext, 240, 75, 0xFFFF);
-}
-
-//Same with the Arduino Logo and the text
-void drawArduino(uint16_t color) {
-  carrier.display.drawBitmap(44, 60, ArduinoLogo, 152, 72, color);
-  carrier.display.drawBitmap(48, 145, ArduinoText, 144, 23, color);
 }

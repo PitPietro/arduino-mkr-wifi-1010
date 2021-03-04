@@ -22,8 +22,11 @@ uint16_t custom_delay = 4000;
 
 void setup() {
   CARRIER_CASE = false;
+
+  // the resolution of the display is 240 x 240
   carrier.begin();
   carrier.display.setRotation(0);
+
 
   uint16_t time = millis();
   carrier.display.fillScreen(ST77XX_BLACK);
@@ -41,6 +44,11 @@ void loop() {
   drawEIoT();
   delay(custom_delay);
 
+  // Arduino Explore IoT KIT logo on white background
+  carrier.display.fillScreen(ST77XX_WHITE);
+  drawEIoT();
+  delay(custom_delay);
+
   // fill screen to override the previous image
   carrier.display.fillScreen(ST77XX_WHITE);
   // black Arduino logo on white background
@@ -55,10 +63,7 @@ void loop() {
   drawArduino(0x04B3);
   delay(custom_delay);
 
-  // Arduino Explore IoT KIT logo on white background
-  carrier.display.fillScreen(ST77XX_WHITE);
-  drawEIoT();
-  delay(custom_delay);
+  
 }
 
 //Compose the differentn parts of the image
