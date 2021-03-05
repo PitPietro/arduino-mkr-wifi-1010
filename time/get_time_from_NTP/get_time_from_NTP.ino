@@ -160,14 +160,22 @@ void loop() {
 
     // an hour is 86400 equals secs per day
     unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
-    // String strHoursUTC = String(hoursUTC);
+    String strHoursUTC = ""; // String(hoursUTC);
+    
+    // in the first 10 hours of each day, we'll want a leading '0' (i.e. '9:5:30' becomes '09:05:30')
+    if (hoursUTC < 10) {
+      strHoursUTC.concat("0");
+    }
 
+    strHoursUTC.concat(String(hoursUTC));
+
+    
     // minutes in UTC time saved as int and String
     // a minute is 3600 equals secs per minute
     unsigned short int minutesUTC = (epoch % 3600) / 60;
     String strMinutesUTC = "";
 
-    // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
+    // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '09:05:30')
     if (minutesUTC < 10) {
       strMinutesUTC.concat("0");
     }
@@ -178,7 +186,7 @@ void loop() {
     unsigned short int secondsUTC = epoch % 60;
     String strSecondsUTC = "";
 
-    // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '9:05:06')
+    // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '09:05:06')
     if (secondsUTC < 10) {
       strSecondsUTC.concat("0");
     }
@@ -203,7 +211,7 @@ void loop() {
     Serial.print("        | ");
     Serial.print(epoch);
     Serial.print(" | ");
-    Serial.print(hoursUTC);
+    Serial.print(strHoursUTC);
     Serial.print(":");
     Serial.print(strMinutesUTC);
     Serial.print(":");
