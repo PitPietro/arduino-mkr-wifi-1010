@@ -34,7 +34,6 @@
 #include <Arduino_MKRIoTCarrier.h>
 #include <SPI.h>
 #include <WiFiUdp.h>
-#include <RTCZero.h>
 #include <WiFiNINA.h>
 #include "arduino_secrets.h"
 
@@ -46,10 +45,53 @@ float humidity = 0;
 // Wifi radio's status
 int status = WL_IDLE_STATUS;
 
-RTCZero rtc;
+// local port to listen for UDP packets
+const unsigned short int localPort = 2390;
 
-// change this to adapt it to your time zone: GMT + 1 = CET (Central European Time)
-const short int TIME = 0;
+// time.nist.gov NTP server
+IPAddress timeServer(129, 6, 15, 28);
+
+// NTP time stamp is in the first 48 bytes of the message
+const int NTP_PACKET_SIZE = 48;
+
+// buffer to hold incoming and outgoing packets
+byte packetBuffer[NTP_PACKET_SIZE];
+
+// a UDP instance to let us send and receive packets over UDP
+WiFiUDP Udp;
+
+// send an NTP request to the time server at the given address
+unsigned long sendNTPpacket(IPAddress& address) {
+  // set all bytes in the buffer to 0
+  memset(packetBuffer, 0, NTP_PACKET_SIZE);
+
+  // initialize values needed to form NTP request
+
+  // LI, Version, Mode
+  packetBuffer[0] = 0b11100011;
+
+  // Stratum, or type of clock
+  packetBuffer[1] = 0;
+
+  // Polling Interval
+  packetBuffer[2] = 6;
+
+  // Peer Clock Precision
+  packetBuffer[3] = 0xEC;
+
+  // 8 bytes of zero for Root Delay & Root Dispersion
+  packetBuffer[12]  = 49;
+  packetBuffer[13]  = 0x4E;
+  packetBuffer[14]  = 49;
+  packetBuffer[15]  = 52;
+
+  // all NTP fields have been given values, now
+  // the board can send a packet requesting a timestamp
+  // NTP requests are made to port 123
+  Udp.beginPacket(address, 123);
+  Udp.write(packetBuffer, NTP_PACKET_SIZE);
+  Udp.endPacket();
+}
 
 void setup() {
   CARRIER_CASE = false;
@@ -63,13 +105,11 @@ void setup() {
     // communication with WiFi module failed!
   }
 
-  short int attemps = 0;
-
   // attempt to connect to Wifi network
-  while (status != WL_CONNECTED && attemps <= 10) {
-    // attempting to connect to network:
-    // WIFI_SSID
-    
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to network: ");
+    Serial.println(WIFI_SSID);
+
     // connect to WPA/WPA2 network
     status = WiFi.begin(WIFI_SSID, WIFI_PWD);
 
@@ -77,95 +117,122 @@ void setup() {
     carrier.display.setTextColor(ST77XX_WHITE);
     carrier.display.setTextSize(2);
     carrier.display.setCursor(35, 100);
-    carrier.display.print("Connecting to");
+    carrier.display.print("Connecting");
     carrier.display.setCursor(35, 120);
-    carrier.display.println(WIFI_SSID);
+    carrier.display.println("to server...");
 
     // wait for connection
-    delay(500);
-    attemps++;
-  }
-
-  if (status != WL_CONNECTED) {
-    carrier.display.fillScreen(ST77XX_RED);
-    carrier.display.setTextColor(ST77XX_WHITE);
-    carrier.display.setTextSize(2);
-    // sets position for printing (x and y)
-    carrier.display.setCursor(35, 100);
-    carrier.display.print("WiFi connection");
-    carrier.display.setCursor(80, 120);
-    carrier.display.print("failed ");
-  }
-
-  // start the RTC communication
-  rtc.begin();
-
-  unsigned long epoch;
-
-  short int numberOfTries = 0, maxTries = 6;
-
-  do {
-    epoch = WiFi.getTime();
-    numberOfTries++;
-  }
-
-  while ((epoch == 0) && (numberOfTries < maxTries));
-
-  if (numberOfTries == maxTries) {
-    // NTP unreachable
-    carrier.display.fillScreen(ST77XX_RED);
-    carrier.display.setTextColor(ST77XX_WHITE);
-    carrier.display.setTextSize(2);
-    carrier.display.setCursor(35, 100);
-    carrier.display.print("NTP unreachable");
-    /*
-
-    */
     delay(5000);
-  } else {
-    // epoch received
-    rtc.setEpoch(epoch);
-    carrier.display.fillScreen(ST77XX_GREEN);
-    carrier.display.setTextColor(ST77XX_WHITE);
-    carrier.display.setTextSize(2);
-    // sets position for printing (x and y)
-    carrier.display.setCursor(35, 100);
-    carrier.display.print("epoch received ");
-    carrier.display.print(epoch);
   }
 
-  // add the TIME constant to the hours
-  // with TIME = 1, it will become CET: GTM + 1
-  // with TIME = 2, it will become CEST: GTM + 2
-  rtc.setHours(rtc.getHours() + TIME);
-
-  // the board ask the hours in GTM and then add the TIME constant
-  // if this new value is major than 23, evaluate the right hours value (from 0 to 23)
-  /*
-    if(rtc.getHours() > 23) {
-    rtc.setHours(rtc.getHours() - 24);
-    rtc.setDay(rtc.getDay() + 1);
-    } else if (rtc.getHours() < 0) {
-    // all rtc's methods only accepts 'byte' as parameter(s), which are equal to 'unsigned char'
-    // it is no possible to have negative time (GTM - TIME = negative number)
-
-    // rtc.setHours(24 - TIME);
-    // you could also check for the day not to be 0th of the month
-    // rtc.setDay(rtc.getDay() - 1);
-    }
-  */
+  Udp.begin(localPort);
 }
 
 void loop() {
+  // send an NTP packet to a time server
+  sendNTPpacket(timeServer);
+
   // read values from sensors
   temperature = carrier.Env.readTemperature();
   humidity = carrier.Env.readHumidity();
 
-  printInfo();
-  // printDate();
-  // printTime();
+  // background
+  carrier.display.fillScreen(ST77XX_BLUE);
+  // white text
+  carrier.display.setTextColor(ST77XX_WHITE);
+  // medium sized text
+  carrier.display.setTextSize(2);
+
+  if (Udp.parsePacket()) {
+    // Serial.println("packet received");
+
+    // the board received a packet, read the data from it
+    // read the packet into the buffer
+    Udp.read(packetBuffer, NTP_PACKET_SIZE);
+
+    // the timestamp starts at byte 40 of the received packet and is four bytes (or two words) long
+    // 1) esxtract the two words
+    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
+    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
+
+    // 2) combine the four bytes (two words) into a long integer
+    // this is NTP time (seconds since Jan 1 1900)
+    unsigned long secsSince1900 = highWord << 16 | lowWord;
+
+    // 3) convert NTP time into everyday time
+    // Unix time starts on Jan 1 1970. In seconds, that's 2208988800
+    const unsigned long seventyYears = 2208988800UL;
+
+    // subtract seventy years: Unix time
+    unsigned long epoch = secsSince1900 - seventyYears;
+
+    // an hour is 86400 equals secs per day
+    unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
+    // String strHoursUTC = String(hoursUTC);
+
+    // minutes in UTC time saved as int and String
+    // a minute is 3600 equals secs per minute
+    unsigned short int minutesUTC = (epoch % 3600) / 60;
+    String strMinutesUTC = "";
+
+    // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
+    if (minutesUTC < 10) {
+      strMinutesUTC.concat("0");
+    }
+
+    strMinutesUTC.concat(String(minutesUTC));
+
+    // seconds in UTC time saved as int and String
+    unsigned short int secondsUTC = epoch % 60;
+    String strSecondsUTC = "";
+
+    // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '9:05:06')
+    if (secondsUTC < 10) {
+      strSecondsUTC.concat("0");
+    }
+
+    strSecondsUTC.concat(String(secondsUTC));
+
+    /*
+       UTC is the time at Greenwich Meridian (GMT)
+       CET is the time at Central European Time, which is UTC + 1
+       CEST is the time at Central European Summer Time, which is UTC + 2
+
+       Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
+       see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
+    */
+
+    // CET = UTC + 1 hour
+    String strHoursCET = "";
+
+    if (hoursUTC + 1 < 10) {
+      strHoursCET.concat("0");
+    }
+
+    strHoursCET.concat(String(hoursUTC + 1));
+
+    String(hoursUTC + 1);
+
+    // time is given by: strHoursCET : strMinutesUTC : strSecondsUTC
+    printTime(strHoursCET, strMinutesUTC, strSecondsUTC);
+    printInfo();
+
+    // printDate();
+  }
+
 
   delay(500);
+}
+
+void printTime(String hours, String minutes, String seconds) {
+  //sets position for printing (x and y)
+  carrier.display.setCursor(60, 60);
+
+  carrier.display.print(hours);
+  carrier.display.print(":");
+  carrier.display.print(minutes);
+  carrier.display.print(":");
+  carrier.display.print(seconds);
 }
 
 void printData() {
@@ -211,27 +278,7 @@ void printDate() {
   */
 }
 
-void printTime() {
-  /*
-    print2digits(rtc.getHours());
-    Serial.print(":");
-
-    print2digits(rtc.getMinutes());
-    Serial.print(":");
-
-    print2digits(rtc.getSeconds());
-    Serial.println();
-  */
-}
-
 void printInfo() {
-  // background
-  carrier.display.fillScreen(ST77XX_BLUE);
-  // white text
-  carrier.display.setTextColor(ST77XX_WHITE);
-  // medium sized text
-  carrier.display.setTextSize(2);
-
   //sets position for printing (x and y)
   carrier.display.setCursor(30, 110);
 

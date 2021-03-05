@@ -1,19 +1,19 @@
 /*
- * NTP Client (Network Time Protocol)
- * 
- * This code will query a Network Time Protocol (NTP) server so that the board can get the time from the Internet.
- * 
- * Press Ctrl + Shift + N and create 'arduino_secrets.h' file as follow:
- * 
- * ```c
- * #define WIFI_SSID "" // place your WiFi name inside the quotes
- * #define WIFI_PWD "" // place your WiFi password inside the quotes
- * ```
- * 
- * Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
- * 
- * Doc: https://www.arduino.cc/en/Tutorial/LibraryExamples/WiFiNINAUdpNTPClient
- * NTP: http://en.wikipedia.org/wiki/Network_Time_Protocol
+   NTP Client (Network Time Protocol)
+
+   This code will query a Network Time Protocol (NTP) server so that the board can get the time from the Internet.
+
+   Press Ctrl + Shift + N and create 'arduino_secrets.h' file as follow:
+
+   ```c
+   #define WIFI_SSID "" // place your WiFi name inside the quotes
+   #define WIFI_PWD "" // place your WiFi password inside the quotes
+   ```
+
+   Note: I added all the 'arduino_secrets.h' files to '.gitignore' to avoid loose of sensitive data.
+
+   Doc: https://www.arduino.cc/en/Tutorial/LibraryExamples/WiFiNINAUdpNTPClient
+   NTP: http://en.wikipedia.org/wiki/Network_Time_Protocol
 */
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
@@ -161,7 +161,7 @@ void loop() {
     // an hour is 86400 equals secs per day
     unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
     String strHoursUTC = ""; // String(hoursUTC);
-    
+
     // in the first 10 hours of each day, we'll want a leading '0' (i.e. '9:5:30' becomes '09:05:30')
     if (hoursUTC < 10) {
       strHoursUTC.concat("0");
@@ -169,7 +169,7 @@ void loop() {
 
     strHoursUTC.concat(String(hoursUTC));
 
-    
+
     // minutes in UTC time saved as int and String
     // a minute is 3600 equals secs per minute
     unsigned short int minutesUTC = (epoch % 3600) / 60;
@@ -194,17 +194,25 @@ void loop() {
     strSecondsUTC.concat(String(secondsUTC));
 
     /*
-     * UTC is the time at Greenwich Meridian (GMT)
-     * CET is the time at Central European Time, which is UTC + 1
-     * CEST is the time at Central European Summer Time, which is UTC + 2
-     * 
-     * Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
-     * see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
-     */
-     
+       UTC is the time at Greenwich Meridian (GMT)
+       CET is the time at Central European Time, which is UTC + 1
+       CEST is the time at Central European Summer Time, which is UTC + 2
+
+       Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
+       see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
+    */
+
     // CET = UTC + 1 hour
-    String strHoursCET = String(hoursUTC + 1);
-    
+    String strHoursCET = "";
+
+    if (hoursUTC + 1 < 10) {
+      strHoursCET.concat("0");
+    }
+
+    strHoursCET.concat(String(hoursUTC + 1));
+
+    String(hoursUTC + 1);
+
     Serial.println("\n\n| Seconds since Jan 1 1900 | Unix time  |    UTC   |    CET   |");
     Serial.print("|--------------------------|------------|----------|----------|\n|        ");
     Serial.print(secsSince1900);
