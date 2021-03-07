@@ -60,6 +60,8 @@ byte packetBuffer[NTP_PACKET_SIZE];
 // a UDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 
+bool isOnline = false;
+
 // send an NTP request to the time server at the given address
 unsigned long sendNTPpacket(IPAddress& address) {
   // set all bytes in the buffer to 0
@@ -104,7 +106,10 @@ void setup() {
   if (WiFi.status() == WL_NO_MODULE) {
     // communication with WiFi module failed!
   }
-
+  
+  short int maxAttemps = 5;
+  short int attemp = 0;
+  
   // attempt to connect to Wifi network
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to network: ");
@@ -122,16 +127,23 @@ void setup() {
     carrier.display.println("to server...");
 
     // wait for connection
-    delay(5000);
-  }
+    delay(500);
+    
+    attemp++;
 
-  Udp.begin(localPort);
+    if (attemp == maxAttemps) {
+      break;
+    }
+  }
+  
+  if(status == WL_CONNECTED) {
+    isOnline = true;
+      
+    Udp.begin(localPort);
+  }
 }
 
 void loop() {
-  // send an NTP packet to a time server
-  sendNTPpacket(timeServer);
-
   // read values from sensors
   temperature = carrier.Env.readTemperature();
   humidity = carrier.Env.readHumidity();
@@ -142,84 +154,87 @@ void loop() {
   carrier.display.setTextColor(ST77XX_WHITE);
   // medium sized text
   carrier.display.setTextSize(2);
+  
+  // if (isOnline == true)
+  if(isOnline) {
+    // send an NTP packet to a time server
+    sendNTPpacket(timeServer);
 
-  if (Udp.parsePacket()) {
-    // Serial.println("packet received");
+    if (Udp.parsePacket()) {
+      // Serial.println("packet received");
 
-    // the board received a packet, read the data from it
-    // read the packet into the buffer
-    Udp.read(packetBuffer, NTP_PACKET_SIZE);
+      // the board received a packet, read the data from it
+      // read the packet into the buffer
+      Udp.read(packetBuffer, NTP_PACKET_SIZE);
 
-    // the timestamp starts at byte 40 of the received packet and is four bytes (or two words) long
-    // 1) esxtract the two words
-    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
+      // the timestamp starts at byte 40 of the received packet and is four bytes (or two words) long
+      // 1) esxtract the two words
+      unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
+      unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
 
-    // 2) combine the four bytes (two words) into a long integer
-    // this is NTP time (seconds since Jan 1 1900)
-    unsigned long secsSince1900 = highWord << 16 | lowWord;
+      // 2) combine the four bytes (two words) into a long integer
+      // this is NTP time (seconds since Jan 1 1900)
+      unsigned long secsSince1900 = highWord << 16 | lowWord;
 
-    // 3) convert NTP time into everyday time
-    // Unix time starts on Jan 1 1970. In seconds, that's 2208988800
-    const unsigned long seventyYears = 2208988800UL;
+      // 3) convert NTP time into everyday time
+      // Unix time starts on Jan 1 1970. In seconds, that's 2208988800
+      const unsigned long seventyYears = 2208988800UL;
 
-    // subtract seventy years: Unix time
-    unsigned long epoch = secsSince1900 - seventyYears;
+      // subtract seventy years: Unix time
+      unsigned long epoch = secsSince1900 - seventyYears;
 
-    // an hour is 86400 equals secs per day
-    unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
-    // String strHoursUTC = String(hoursUTC);
+      // an hour is 86400 equals secs per day
+      unsigned short int hoursUTC = (epoch  % 86400L) / 3600;
+      // String strHoursUTC = String(hoursUTC);
 
-    // minutes in UTC time saved as int and String
-    // a minute is 3600 equals secs per minute
-    unsigned short int minutesUTC = (epoch % 3600) / 60;
-    String strMinutesUTC = "";
+      // minutes in UTC time saved as int and String
+      // a minute is 3600 equals secs per minute
+      unsigned short int minutesUTC = (epoch % 3600) / 60;
+      String strMinutesUTC = "";
 
-    // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
-    if (minutesUTC < 10) {
-      strMinutesUTC.concat("0");
+      // in the first 10 minutes of each hour, we'll want a leading '0' (i.e. '9:5:30' becomes '9:05:30')
+      if (minutesUTC < 10) {
+        strMinutesUTC.concat("0");
+      }
+
+      strMinutesUTC.concat(String(minutesUTC));
+
+      // seconds in UTC time saved as int and String
+      unsigned short int secondsUTC = epoch % 60;
+      String strSecondsUTC = "";
+
+      // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '9:05:06')
+      if (secondsUTC < 10) {
+        strSecondsUTC.concat("0");
+      }
+
+      strSecondsUTC.concat(String(secondsUTC));
+
+      /*
+        UTC is the time at Greenwich Meridian (GMT)
+        CET is the time at Central European Time, which is UTC + 1
+        CEST is the time at Central European Summer Time, which is UTC + 2
+
+        Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
+        see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
+      */
+
+      // CET = UTC + 1 hour
+      String strHoursCET = "";
+
+      if (hoursUTC + 1 < 10) {
+        strHoursCET.concat("0");
+      }
+
+      strHoursCET.concat(String(hoursUTC + 1));
+
+      // time is given by: strHoursCET : strMinutesUTC : strSecondsUTC
+      printTime(strHoursCET, strMinutesUTC, strSecondsUTC);
     }
-
-    strMinutesUTC.concat(String(minutesUTC));
-
-    // seconds in UTC time saved as int and String
-    unsigned short int secondsUTC = epoch % 60;
-    String strSecondsUTC = "";
-
-    // in the first 10 seconds of each minute, the monitor need a leading '0' (i.e. '9:5:6' becomes '9:05:06')
-    if (secondsUTC < 10) {
-      strSecondsUTC.concat("0");
-    }
-
-    strSecondsUTC.concat(String(secondsUTC));
-
-    /*
-       UTC is the time at Greenwich Meridian (GMT)
-       CET is the time at Central European Time, which is UTC + 1
-       CEST is the time at Central European Summer Time, which is UTC + 2
-
-       Please Note: by the time you'll run the script, you'll probably need to add some extra spaces to correctly
-       see this table since the 'Seconds since 01/01/1900' could have become larger than a 10 digits number.
-    */
-
-    // CET = UTC + 1 hour
-    String strHoursCET = "";
-
-    if (hoursUTC + 1 < 10) {
-      strHoursCET.concat("0");
-    }
-
-    strHoursCET.concat(String(hoursUTC + 1));
-
-    String(hoursUTC + 1);
-
-    // time is given by: strHoursCET : strMinutesUTC : strSecondsUTC
-    printTime(strHoursCET, strMinutesUTC, strSecondsUTC);
-    printInfo();
-
-    // printDate();
   }
-
+  
+  // always display weather info, even if the board does not connect to a WiFi network
+  printInfo();
 
   delay(500);
 }
