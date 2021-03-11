@@ -96,7 +96,7 @@ double long_long_ago_third[2][MAX_NOTES] {
   {
     C3, C3, D3,         //  1
     E3, E3, F3,         //  2
-    G3, A3, G3,         //  3
+    G3, A3, B3,         //  3
     C4, B3, A3, G3,     //  4
     B3, A3, G3,         //  5
     F3,                 //  6
@@ -162,5 +162,53 @@ double long_long_ago_third[2][MAX_NOTES] {
     QUARTER, QUARTER, QUARTER, QUARTER,        // 31
     QUARTER, QUARTER, HALF,                    // 32
     END
+  }
+};
+
+/*
+   "Chorale # 38" by J. S. Bach from "Berklee Basic Guitar part 2" by William Leavitt
+
+   The melody's arrays wrap at each bar to allow a better code readability
+*/
+double chorale_38_first[2][MAX_NOTES] {
+  {
+    B3, C4, D4, D4,      //  1
+    G3, A3, B3,          //  2
+    E4, FS4, G4, B3,     //  3
+    A3, G3,              //  4
+    B3, C4, D4, D4,      //  5 = 1
+    G3, A3, B3,          //  6 = 2
+    E4, FS4, G4, B3,     //  7 = 3
+    A3, G3,              //  8 = 4
+    D4, A3, B3,          //  9
+    E4, D4, CS4,         // 10
+    D4, A3, B4, CS4, D4, // 11
+    D4, CS4, D4,         // 12
+    B3, C4, D4, D4,      // 13 = 1
+    G3, A3, B3,          // 14 = 2
+    E4, FS4, G4, B3,     // 15 = 3
+    A3, G3,              // 16 = 4
+    E4, FS4, G4, B3,     // 17
+    A3, G3,              // 18
+  },
+  {
+    QUARTER, QUARTER, QUARTER, QUARTER,        //  1
+    QUARTER, QUARTER, HALF,                    //  2
+    QUARTER, QUARTER, QUARTER, QUARTER,        //  3
+    HALF, HALF,                                //  4
+    QUARTER, QUARTER, QUARTER, QUARTER,        //  5 = 1
+    QUARTER, QUARTER, HALF,                    //  6 = 2
+    QUARTER, QUARTER, QUARTER, QUARTER,        //  7 = 3
+    HALF, HALF,                                //  8 = 4
+    QUARTER, QUARTER, HALF,                    //  9
+    D_QUARTER, EIGHTH, HALF,                   // 10
+    QUARTER, QUARTER, EIGHTH, EIGHTH, QUARTER, // 11
+    QUARTER, QUARTER, HALF,                    // 12
+    QUARTER, QUARTER, QUARTER, QUARTER,        // 13 = 1
+    QUARTER, QUARTER, HALF,                    // 14 = 2
+    QUARTER, QUARTER, QUARTER, QUARTER,        // 15 = 3
+    HALF, HALF,                                // 16 = 4
+    QUARTER, QUARTER, QUARTER, QUARTER,        // 17
+    HALF, HALF,                                // 18
   }
 };
