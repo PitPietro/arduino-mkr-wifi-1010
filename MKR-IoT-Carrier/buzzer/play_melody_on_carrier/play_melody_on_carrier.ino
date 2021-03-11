@@ -1,6 +1,4 @@
-// TODO n°1: replace the 'print' statements by displaying the current note on the screen
-// TODO n°2: make a "draw" about the current note using the draw functions
-// TODO n°3: let the user select which song to play by using the buttons (and the SD card to store the songs, if they're too many)
+// TODO let the user select which song to play by using the buttons (and the SD card to store the songs, if they're too many)
 
 /*
    Play Melody on MKR IoT C arrier
@@ -92,15 +90,84 @@ void playMelody(double melody[2][MAX_NOTES]) {
     // Serial.print(thisNote);
     // Serial.print(") ");
 
-    /*
-      Serial.print(melody[0][thisNote]);
-      Serial.print(" --> note duration: ");
-      Serial.print(noteDuration);
-      Serial.print(" = ");
-      Serial.print(timeMillis);
-      Serial.print(" * ");
-      Serial.println(melody[1][thisNote]);
-    */
+    // TODO n°1: replace the 'print' statements by displaying the current note on the screen
+    // TODO n°2: make a "draw" about the current note using the draw functions
+
+    switch (melody[1][thisNote]) {
+      case WHOLE: {
+          // draw the semibreve on the shield screen
+        }
+        break;
+
+      case HALF: {
+          // draw the minim note on the shield screen
+        }
+        break;
+
+      case QUARTER: {
+          // draw the crotchet note on the shield screen
+        }
+        break;
+
+      case EIGHTH: {
+          // draw the quaver note on the shield screen
+        }
+        break;
+
+      case SIXTEENTH: {
+          // draw the semiquaver note on the shield screen
+        }
+        break;
+
+      case THIRTY_SECOND: {
+          // draw the demisemiquaver note on the shield screen
+        }
+        break;
+
+      case SIXTY_FOURTH: {
+          // draw the hemidemisemiquaver note on the shield screen
+        }
+        break;
+
+      case D_WHOLE: {
+          // draw the dotted semibreve on the shield screen
+        }
+        break;
+
+      case D_HALF: {
+          // draw the dotted minim note on the shield screen
+        }
+        break;
+
+      case D_QUARTER: {
+          // draw the dotted crotchet note on the shield screen
+        }
+        break;
+
+      case D_EIGHTH: {
+          // draw the dotted quaver note on the shield screen
+        }
+        break;
+
+      case D_SIXTEENTH: {
+          // draw the dotted semiquaver note on the shield screen
+        }
+        break;
+
+      case D_THIRTY_SECOND: {
+          // draw the dotted demisemiquaver note on the shield screen
+        }
+        break;
+
+      case D_SIXTY_FOURTH: {
+          // draw the dotted hemidemisemiquaver note on the shield screen
+        }
+        break;
+
+      default:
+        // the note does not exists
+        break;
+    };
 
     // add a pause in milliseconds to avoid listen the melody like an always
     // continuous note that only changes tonality (frequency)
