@@ -182,7 +182,7 @@ double chorale_38_first[2][MAX_NOTES] {
     A3, G3,              //  8 = 4
     D4, A3, B3,          //  9
     E4, D4, CS4,         // 10
-    D4, A3, B4, CS4, D4, // 11
+    D4, A3, B3, CS4, D4, // 11
     D4, CS4, D4,         // 12
     B3, C4, D4, D4,      // 13 = 1
     G3, A3, B3,          // 14 = 2
@@ -190,6 +190,7 @@ double chorale_38_first[2][MAX_NOTES] {
     A3, G3,              // 16 = 4
     E4, FS4, G4, B3,     // 17
     A3, G3,              // 18
+    END
   },
   {
     QUARTER, QUARTER, QUARTER, QUARTER,        //  1
@@ -210,5 +211,6 @@ double chorale_38_first[2][MAX_NOTES] {
     HALF, HALF,                                // 16 = 4
     QUARTER, QUARTER, QUARTER, QUARTER,        // 17
     HALF, HALF,                                // 18
+    END
   }
 };

@@ -93,6 +93,9 @@ void playMelody(double melody[2][MAX_NOTES]) {
     // TODO n°1: replace the 'print' statements by displaying the current note on the screen
     // TODO n°2: make a "draw" about the current note using the draw functions
 
+    // exit status 1 - switch quantity not an integer
+
+    /*
     switch (melody[1][thisNote]) {
       case WHOLE: {
           // draw the semibreve on the shield screen
@@ -169,6 +172,7 @@ void playMelody(double melody[2][MAX_NOTES]) {
         break;
     };
 
+    */
     // add a pause in milliseconds to avoid listen the melody like an always
     // continuous note that only changes tonality (frequency)
     int pauseBetweenNotes = 10;
@@ -195,7 +199,7 @@ void setup() {
   playMelody(count_time);
   // playMelody(white_coral_bells);
   // playMelody(base_base);
-  playMelody(long_long_ago_third);
+  playMelody(chorale_38_first);
 }
 
 void loop() {
