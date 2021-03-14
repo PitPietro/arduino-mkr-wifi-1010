@@ -18,6 +18,7 @@
 #include "musical-constants.h"
 #include "musical-notes.h"
 #include "songs.h"
+#include "enum_control.h"
 
 MKRIoTCarrier carrier;
 
@@ -68,35 +69,8 @@ int melodyDimension(double melody[2][MAX_NOTES]) {
   }
 }
 
-void playMelody(double melody[2][MAX_NOTES]) {
-  // melody contains the notes (in the 1st array) and the notes' duration (in
-  // the 2nd array) iterate over the notes of the melody
-
-  int dim = melodyDimension(melody);
-  int thisNote;
-
-  for (thisNote = 0; thisNote < dim; thisNote++) {
-
-    // to calculate the note duration, take one second divided by the note type
-    // e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-
-    // int noteDuration = 1000 / melody[1][thisNote];
-
-    // 4'000 ms = 4 seconds = 1 second * 4 musical measures = 60 BMP
-    double timeMillis = BPMToMillisec(DEFAULT_BPM);
-    double noteDuration = timeMillis * melody[1][thisNote];
-
-    // some debugging info on the Serial Monitor
-    // Serial.print(thisNote);
-    // Serial.print(") ");
-
-    // TODO n°1: replace the 'print' statements by displaying the current note on the screen
-    // TODO n°2: make a "draw" about the current note using the draw functions
-
-    // exit status 1 - switch quantity not an integer
-
-    /*
-    switch (melody[1][thisNote]) {
+void controlNote (double note) {
+    switch (note) {
       case WHOLE: {
           // draw the semibreve on the shield screen
         }
@@ -171,8 +145,38 @@ void playMelody(double melody[2][MAX_NOTES]) {
         // the note does not exists
         break;
     };
+}
 
-    */
+void playMelody(double melody[2][MAX_NOTES]) {
+  // melody contains the notes (in the 1st array) and the notes' duration (in
+  // the 2nd array) iterate over the notes of the melody
+
+  int dim = melodyDimension(melody);
+  int thisNote;
+
+  for (thisNote = 0; thisNote < dim; thisNote++) {
+
+    // to calculate the note duration, take one second divided by the note type
+    // e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+
+    // int noteDuration = 1000 / melody[1][thisNote];
+
+    // 4'000 ms = 4 seconds = 1 second * 4 musical measures = 60 BMP
+    double timeMillis = BPMToMillisec(DEFAULT_BPM);
+    double noteDuration = timeMillis * melody[1][thisNote];
+
+    // some debugging info on the Serial Monitor
+    // Serial.print(thisNote);
+    // Serial.print(") ");
+
+    // TODO n°1: replace the 'print' statements by displaying the current note on the screen
+    // TODO n°2: make a "draw" about the current note using the draw functions
+
+    // exit status 1 - switch quantity not an integer
+    // emun do not works: use a Dictionary ? 
+    controlNote(melody[1][thisNote]);
+
+    
     // add a pause in milliseconds to avoid listen the melody like an always
     // continuous note that only changes tonality (frequency)
     int pauseBetweenNotes = 10;
