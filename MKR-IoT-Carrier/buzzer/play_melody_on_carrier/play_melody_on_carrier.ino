@@ -69,81 +69,38 @@ int melodyDimension(double melody[2][MAX_NOTES]) {
 }
 
 void controlNote (double note) {
-    switch (note) {
-      case WHOLE: {
-          // draw the semibreve on the shield screen
-        }
-        break;
-
-      case HALF: {
-          // draw the minim note on the shield screen
-        }
-        break;
-
-      case QUARTER: {
-          // draw the crotchet note on the shield screen
-        }
-        break;
-
-      case EIGHTH: {
-          // draw the quaver note on the shield screen
-        }
-        break;
-
-      case SIXTEENTH: {
-          // draw the semiquaver note on the shield screen
-        }
-        break;
-
-      case THIRTY_SECOND: {
-          // draw the demisemiquaver note on the shield screen
-        }
-        break;
-
-      case SIXTY_FOURTH: {
-          // draw the hemidemisemiquaver note on the shield screen
-        }
-        break;
-
-      case D_WHOLE: {
-          // draw the dotted semibreve on the shield screen
-        }
-        break;
-
-      case D_HALF: {
-          // draw the dotted minim note on the shield screen
-        }
-        break;
-
-      case D_QUARTER: {
-          // draw the dotted crotchet note on the shield screen
-        }
-        break;
-
-      case D_EIGHTH: {
-          // draw the dotted quaver note on the shield screen
-        }
-        break;
-
-      case D_SIXTEENTH: {
-          // draw the dotted semiquaver note on the shield screen
-        }
-        break;
-
-      case D_THIRTY_SECOND: {
-          // draw the dotted demisemiquaver note on the shield screen
-        }
-        break;
-
-      case D_SIXTY_FOURTH: {
-          // draw the dotted hemidemisemiquaver note on the shield screen
-        }
-        break;
-
-      default:
-        // the note does not exists
-        break;
-    };
+  // replaced the useless switch-case with an ugly if-else clause
+  if (note == WHOLE) {
+    // draw the semibreve on the shield screen
+  } else if (note == HALF) {
+    // draw the minim note on the shield screen
+  } else if (note == QUARTER) {
+    // draw the crotchet note on the shield screen
+  } else if (note == EIGHTH) {
+    // draw the quaver note on the shield screen
+  } else if (note == SIXTEENTH) {
+    // draw the semiquaver note on the shield screen
+  } else if (note == THIRTY_SECOND) {
+    // draw the demisemiquaver note on the shield screen
+  } else if (note == SIXTY_FOURTH) {
+    // draw the hemidemisemiquaver note on the shield screen
+  } else if (note == D_WHOLE) {
+    // draw the dotted semibreve on the shield screen
+  } else if (note == D_HALF) {
+    // draw the dotted minim note on the shield screen
+  } else if (note == D_QUARTER) {
+    // draw the dotted crotchet note on the shield screen
+  } else if (note == D_EIGHTH) {
+    // draw the dotted quaver note on the shield screen
+  } else if (note == D_SIXTEENTH) {
+    // draw the dotted semiquaver note on the shield screen
+  } else if (note == D_THIRTY_SECOND) {
+    // draw the dotted demisemiquaver note on the shield screen
+  } else if (note == D_SIXTY_FOURTH) {
+    // draw the dotted hemidemisemiquaver note on the shield screen
+  } else {
+    // the note does not exists
+  }
 }
 
 void playMelody(double melody[2][MAX_NOTES]) {
@@ -172,10 +129,10 @@ void playMelody(double melody[2][MAX_NOTES]) {
     // TODO n°2: make a "draw" about the current note using the draw functions
 
     // exit status 1 - switch quantity not an integer
-    // emun do not works: use a Dictionary ? 
+    // emun do not works: use a Dictionary ?
     controlNote(melody[1][thisNote]);
 
-    
+
     // add a pause in milliseconds to avoid listen the melody like an always
     // continuous note that only changes tonality (frequency)
     int pauseBetweenNotes = 10;
