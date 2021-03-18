@@ -68,7 +68,10 @@ int melodyDimension(double melody[2][MAX_NOTES]) {
   }
 }
 
-void controlNote (double note) {
+/*
+ * the display is controller using the Adafruit-ST7735-Library with a resolution of 240x240
+*/
+void drawNote (double note) {
   // replaced the useless switch-case with an ugly if-else clause
   if (note == WHOLE) {
     // draw the semibreve on the shield screen
@@ -130,7 +133,7 @@ void playMelody(double melody[2][MAX_NOTES]) {
 
     // exit status 1 - switch quantity not an integer
     // emun do not works: use a Dictionary ?
-    controlNote(melody[1][thisNote]);
+    drawNote(melody[1][thisNote]);
 
 
     // add a pause in milliseconds to avoid listen the melody like an always
