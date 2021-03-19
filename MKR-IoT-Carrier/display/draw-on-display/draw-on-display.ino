@@ -48,6 +48,34 @@
 #define C 9
 MKRIoTCarrier carrier;
 
+void fillScreenAllColors(long unsigned int);
+void getScreenDim(long unsigned int, short int, short int);
+void rotateScreen(long unsigned int);
+void setTextColorAllColors(long unsigned int);
+void wrapText(long unsigned int);
+
+void setup() {
+  CARRIER_CASE = false;
+  carrier.begin();
+}
+
+void loop() {
+  /* general */
+  fillScreenAllColors(1000);
+
+  // display the screen dimensions
+  getScreenDim(5000, 65, 120);
+
+  // rotate the screen (0-3)
+  rotateScreen(2000);
+
+  /* text color */
+  setTextColorAllColors(1000);
+  wrapText(2000);
+
+  /* drawings */
+}
+
 void fillScreenAllColors(long unsigned int delayTime) {
   uint16_t colors[C] = {ST77XX_BLACK, ST77XX_WHITE, ST77XX_RED, ST77XX_GREEN, ST77XX_BLUE, ST77XX_CYAN, ST77XX_MAGENTA, ST77XX_YELLOW, ST77XX_ORANGE};
 
@@ -57,11 +85,11 @@ void fillScreenAllColors(long unsigned int delayTime) {
   }
 }
 
-void getScreenDim(long unsigned int delayTime, int screenX, short int screenY) {
+void getScreenDim(long unsigned int delayTime, short int screenX, short int screenY) {
   short int screenWidth = carrier.display.width();
   short int screenHeight = carrier.display.height();
 
-  // what's the type for this argoments?
+  carrier.display.setRotation(0);
   carrier.display.setCursor(screenX, screenY);
   carrier.display.setTextSize(2);
 
@@ -75,31 +103,65 @@ void getScreenDim(long unsigned int delayTime, int screenX, short int screenY) {
 void rotateScreen(long unsigned int delayTime) {
   // rotate the coordinate system with a number from 0 to 3
 
-  short int center = carrier.display.width() / 2;
+  short int center = ( carrier.display.width() / 2 ) - 8;
 
   for (int i = 0; i < 4; i++) {
     carrier.display.fillScreen(ST77XX_BLACK);
-    carrier.display.setCursor(center - 8, center - 8);
+    carrier.display.setCursor(center, center);
     carrier.display.setTextSize(4);
     carrier.display.setRotation(i);
     carrier.display.print(i);
-    
+
     delay(delayTime);
   }
 }
 
-void setup() {
-  CARRIER_CASE = false;
-  carrier.begin();
+void setTextColorAllColors(long unsigned int delayTime) {
+  uint16_t colors[C] = {ST77XX_BLACK, ST77XX_WHITE, ST77XX_RED, ST77XX_GREEN, ST77XX_BLUE, ST77XX_CYAN, ST77XX_MAGENTA, ST77XX_YELLOW, ST77XX_ORANGE};
+
+  short int center = ( carrier.display.width() / 2 ) - 16;
+
+  for (int i = 0; i < C; i++) {
+    if (colors[i] == ST77XX_BLACK)
+      carrier.display.fillScreen(ST77XX_WHITE);
+    else
+      carrier.display.fillScreen(ST77XX_BLACK);
+
+    carrier.display.setRotation(0);
+    carrier.display.setCursor(center, center);
+    carrier.display.setTextSize(6);
+
+    carrier.display.setTextColor(colors[i]);
+    carrier.display.print("A");
+
+    delay(delayTime);
+  }
 }
 
-void loop() {
-  // general
-  // fillScreenAllColors(1000);
+void wrapText(long unsigned int delayTime) {
+  // set the auto wrap of the text, if it is not the text will not jump to the next line.
 
-  // display the screen dimensions
-  // getScreenDim(5000, 65, 120);
+  short int center = ( carrier.display.width() / 2 ) - 10;
+  String message = "A very very long text line, you don't know how much long";
 
-  // rotate the screen (0-3)
-  rotateScreen(2000);
+  carrier.display.setRotation(0);
+  
+  carrier.display.setTextWrap(true);
+  carrier.display.fillScreen(ST77XX_WHITE);
+  carrier.display.setCursor(20, center);
+  carrier.display.setTextSize(2);
+  carrier.display.setTextColor(ST77XX_BLACK);
+  carrier.display.print(message);
+
+  delay(delayTime);
+
+  // deny auto wrap
+  carrier.display.setTextWrap(false);
+  carrier.display.fillScreen(ST77XX_WHITE);
+  carrier.display.setCursor(20, center);
+  carrier.display.setTextSize(2);
+  carrier.display.setTextColor(ST77XX_BLACK);
+  carrier.display.print(message);
+
+  delay(delayTime);
 }
