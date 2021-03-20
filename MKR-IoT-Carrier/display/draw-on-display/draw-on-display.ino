@@ -2,6 +2,7 @@
    Draw on display
 
    the display is controller using the Adafruit-ST7735-Library with a resolution of 240x240
+   https://cdn-learn.adafruit.com/downloads/pdf/adafruit-gfx-graphics-library.pdf
 
    Which colors can be displayed?
    Colors : every color with the prefix 'ST77XX_' (i.e. 'ST77XX_BLACK').
@@ -49,10 +50,11 @@
 MKRIoTCarrier carrier;
 
 void fillScreenAllColors(long unsigned int);
-void getScreenDim(long unsigned int, short int, short int);
+void getScreenDim(long unsigned int, uint16_t, uint16_t);
 void rotateScreen(long unsigned int);
 void setTextColorAllColors(long unsigned int);
 void wrapText(long unsigned int);
+void drawLineOnDisplay(long unsigned int);
 
 void setup() {
   CARRIER_CASE = false;
@@ -61,19 +63,20 @@ void setup() {
 
 void loop() {
   /* general */
-  fillScreenAllColors(1000);
+  // fillScreenAllColors(1000);
 
   // display the screen dimensions
-  getScreenDim(5000, 65, 120);
+  // getScreenDim(5000, 65, 120);
 
   // rotate the screen (0-3)
-  rotateScreen(2000);
+  // rotateScreen(2000);
 
   /* text color */
-  setTextColorAllColors(1000);
-  wrapText(2000);
+  // setTextColorAllColors(1000);
+  // wrapText(2000);
 
   /* drawings */
+  drawLineOnDisplay(50);
 }
 
 void fillScreenAllColors(long unsigned int delayTime) {
@@ -85,12 +88,12 @@ void fillScreenAllColors(long unsigned int delayTime) {
   }
 }
 
-void getScreenDim(long unsigned int delayTime, short int screenX, short int screenY) {
+void getScreenDim(long unsigned int delayTime, uint16_t x0, uint16_t y0) {
   short int screenWidth = carrier.display.width();
   short int screenHeight = carrier.display.height();
 
   carrier.display.setRotation(0);
-  carrier.display.setCursor(screenX, screenY);
+  carrier.display.setCursor(x0, y0);
   carrier.display.setTextSize(2);
 
   carrier.display.print(screenWidth);
@@ -145,7 +148,7 @@ void wrapText(long unsigned int delayTime) {
   String message = "A very very long text line, you don't know how much long";
 
   carrier.display.setRotation(0);
-  
+
   carrier.display.setTextWrap(true);
   carrier.display.fillScreen(ST77XX_WHITE);
   carrier.display.setCursor(20, center);
@@ -164,4 +167,22 @@ void wrapText(long unsigned int delayTime) {
   carrier.display.print(message);
 
   delay(delayTime);
+}
+
+/* drawings */
+
+/*
+  void drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
+*/
+void drawLineOnDisplay(long unsigned int delayTime) {
+  carrier.display.fillScreen(ST77XX_WHITE);
+
+  uint16_t width = carrier.display.width();
+  uint16_t height = carrier.display.height();
+
+  for (int i = 0; i < carrier.display.height(); i+= 2) {
+    carrier.display.drawLine(width, height, height - i, i, ST77XX_GREEN);
+    carrier.display.drawLine(0, 0, i, height - i, ST77XX_RED);
+    delay(delayTime);
+  }
 }
