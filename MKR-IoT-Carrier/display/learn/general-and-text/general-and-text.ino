@@ -1,5 +1,5 @@
 /*
-   Draw on display
+   Learn general & text functions of MKR IoT Carrier's display
 
    the display is controller using the Adafruit-ST7735-Library with a resolution of 240x240
    https://cdn-learn.adafruit.com/downloads/pdf/adafruit-gfx-graphics-library.pdf
@@ -15,34 +15,23 @@
    digitalWrite(TFT_BLACKLIGHT,HIGH);
    ```
 
-  https://github.com/adafruit/Adafruit-ST7735-Library/blob/master/Adafruit_ST77xx.h
-  ```c
+   https://github.com/adafruit/Adafruit-ST7735-Library/blob/master/Adafruit_ST77xx.h
+   ```c
    // Some ready-made 16-bit ('565') color settings:
-  #define ST77XX_BLACK 0x0000
-  #define ST77XX_WHITE 0xFFFF
-  #define ST77XX_RED 0xF800
-  #define ST77XX_GREEN 0x07E0
-  #define ST77XX_BLUE 0x001F
-  #define ST77XX_CYAN 0x07FF
-  #define ST77XX_MAGENTA 0xF81F
-  #define ST77XX_YELLOW 0xFFE0
-  #define ST77XX_ORANGE 0xFC00
-  ```
+   #define ST77XX_BLACK 0x0000
+   #define ST77XX_WHITE 0xFFFF
+   #define ST77XX_RED 0xF800
+   #define ST77XX_GREEN 0x07E0
+   #define ST77XX_BLUE 0x001F
+   #define ST77XX_CYAN 0x07FF
+   #define ST77XX_MAGENTA 0xF81F
+   #define ST77XX_YELLOW 0xFFE0
+   #define ST77XX_ORANGE 0xFC00
+   ```
 
-  width and height are defined in the same header file as above
-  ```
-  #define ST7735_TFTWIDTH_128 128  // for 1.44 and mini
-  #define ST7735_TFTWIDTH_80 80    // for mini
-  #define ST7735_TFTHEIGHT_128 128 // for 1.44" display
-  #define ST7735_TFTHEIGHT_160 160 // for 1.8" and mini display
-
-  ```
-
-  And are setted in https://github.com/adafruit/Adafruit-ST7735-Library/blob/master/Adafruit_ST7735.cpp
-
-
-  Docs: https://www.arduino.cc/reference/en/libraries/arduino_mkriotcarrier/
-  Adafruit-ST7735-Library: https://github.com/adafruit/Adafruit-ST7735-Library/
+   Docs: https://www.arduino.cc/reference/en/libraries/arduino_mkriotcarrier/
+   Arduino Style Guide: https://www.arduino.cc/en/Reference/StyleGuide
+   Adafruit-ST7735-Library: https://github.com/adafruit/Adafruit-ST7735-Library/
 */
 
 #include <Arduino_MKRIoTCarrier.h>
@@ -54,7 +43,6 @@ void getScreenDim(long unsigned int, uint16_t, uint16_t);
 void rotateScreen(long unsigned int);
 void setTextColorAllColors(long unsigned int);
 void wrapText(long unsigned int);
-void drawLineOnDisplay(long unsigned int);
 
 void setup() {
   CARRIER_CASE = false;
@@ -63,20 +51,17 @@ void setup() {
 
 void loop() {
   /* general */
-  // fillScreenAllColors(1000);
+  fillScreenAllColors(1000);
 
   // display the screen dimensions
-  // getScreenDim(5000, 65, 120);
+  getScreenDim(5000, 65, 120);
 
   // rotate the screen (0-3)
-  // rotateScreen(2000);
+  rotateScreen(2000);
 
   /* text color */
-  // setTextColorAllColors(1000);
-  // wrapText(2000);
-
-  /* drawings */
-  drawLineOnDisplay(50);
+  setTextColorAllColors(1000);
+  wrapText(2000);
 }
 
 void fillScreenAllColors(long unsigned int delayTime) {
@@ -89,8 +74,8 @@ void fillScreenAllColors(long unsigned int delayTime) {
 }
 
 void getScreenDim(long unsigned int delayTime, uint16_t x0, uint16_t y0) {
-  short int screenWidth = carrier.display.width();
-  short int screenHeight = carrier.display.height();
+  uint16_t screenWidth = carrier.display.width();
+  uint16_t screenHeight = carrier.display.height();
 
   carrier.display.setRotation(0);
   carrier.display.setCursor(x0, y0);
@@ -167,22 +152,4 @@ void wrapText(long unsigned int delayTime) {
   carrier.display.print(message);
 
   delay(delayTime);
-}
-
-/* drawings */
-
-/*
-  void drawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
-*/
-void drawLineOnDisplay(long unsigned int delayTime) {
-  carrier.display.fillScreen(ST77XX_WHITE);
-
-  uint16_t width = carrier.display.width();
-  uint16_t height = carrier.display.height();
-
-  for (int i = 0; i < carrier.display.height(); i+= 2) {
-    carrier.display.drawLine(width, height, height - i, i, ST77XX_GREEN);
-    carrier.display.drawLine(0, 0, i, height - i, ST77XX_RED);
-    delay(delayTime);
-  }
 }
