@@ -31,7 +31,6 @@ void setup() {
 }
 
 void loop() {
-  /* drawings */
   drawLineOnDisplay(50);
 }
 

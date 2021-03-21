@@ -29,6 +29,9 @@
    #define ST77XX_ORANGE 0xFC00
    ```
 
+   According to Arduino style guide, it's better to avoid data types like uint8_t, uint16_t
+   'unsigned char' are in a range between 0 and 255
+
    Docs: https://www.arduino.cc/reference/en/libraries/arduino_mkriotcarrier/
    Arduino Style Guide: https://www.arduino.cc/en/Reference/StyleGuide
    Adafruit-ST7735-Library: https://github.com/adafruit/Adafruit-ST7735-Library/
@@ -39,7 +42,7 @@
 MKRIoTCarrier carrier;
 
 void fillScreenAllColors(long unsigned int);
-void getScreenDim(long unsigned int, uint16_t, uint16_t);
+void getScreenDim(long unsigned int, unsigned char, unsigned char);
 void rotateScreen(long unsigned int);
 void setTextColorAllColors(long unsigned int);
 void wrapText(long unsigned int);
@@ -54,7 +57,7 @@ void loop() {
   fillScreenAllColors(1000);
 
   // display the screen dimensions
-  getScreenDim(5000, 65, 120);
+  getScreenDim(5000, 15, 110);
 
   // rotate the screen (0-3)
   rotateScreen(2000);
@@ -62,6 +65,8 @@ void loop() {
   /* text color */
   setTextColorAllColors(1000);
   wrapText(2000);
+
+  /* TODO text demos */
 }
 
 void fillScreenAllColors(long unsigned int delayTime) {
@@ -73,13 +78,15 @@ void fillScreenAllColors(long unsigned int delayTime) {
   }
 }
 
-void getScreenDim(long unsigned int delayTime, uint16_t x0, uint16_t y0) {
-  uint16_t screenWidth = carrier.display.width();
-  uint16_t screenHeight = carrier.display.height();
+void getScreenDim(long unsigned int delayTime, unsigned char x0, unsigned char y0) {
+  unsigned char screenWidth = carrier.display.width();
+  unsigned char screenHeight = carrier.display.height();
 
+  carrier.display.fillScreen(ST77XX_WHITE);
   carrier.display.setRotation(0);
   carrier.display.setCursor(x0, y0);
-  carrier.display.setTextSize(2);
+  carrier.display.setTextSize(4);
+  carrier.display.setTextColor(ST77XX_BLACK);
 
   carrier.display.print(screenWidth);
   carrier.display.print(" x ");
@@ -91,11 +98,12 @@ void getScreenDim(long unsigned int delayTime, uint16_t x0, uint16_t y0) {
 void rotateScreen(long unsigned int delayTime) {
   // rotate the coordinate system with a number from 0 to 3
 
-  short int center = ( carrier.display.width() / 2 ) - 8;
+  unsigned char center = ( carrier.display.width() / 2 ) - 8;
 
   for (int i = 0; i < 4; i++) {
     carrier.display.fillScreen(ST77XX_BLACK);
     carrier.display.setCursor(center, center);
+    carrier.display.setTextColor(ST77XX_WHITE);
     carrier.display.setTextSize(4);
     carrier.display.setRotation(i);
     carrier.display.print(i);
@@ -105,9 +113,9 @@ void rotateScreen(long unsigned int delayTime) {
 }
 
 void setTextColorAllColors(long unsigned int delayTime) {
-  uint16_t colors[C] = {ST77XX_BLACK, ST77XX_WHITE, ST77XX_RED, ST77XX_GREEN, ST77XX_BLUE, ST77XX_CYAN, ST77XX_MAGENTA, ST77XX_YELLOW, ST77XX_ORANGE};
+  unsigned char colors[C] = {ST77XX_BLACK, ST77XX_WHITE, ST77XX_RED, ST77XX_GREEN, ST77XX_BLUE, ST77XX_CYAN, ST77XX_MAGENTA, ST77XX_YELLOW, ST77XX_ORANGE};
 
-  short int center = ( carrier.display.width() / 2 ) - 16;
+  unsigned char center = ( carrier.display.width() / 2 ) - 16;
 
   for (int i = 0; i < C; i++) {
     if (colors[i] == ST77XX_BLACK)
@@ -129,7 +137,7 @@ void setTextColorAllColors(long unsigned int delayTime) {
 void wrapText(long unsigned int delayTime) {
   // set the auto wrap of the text, if it is not the text will not jump to the next line.
 
-  short int center = ( carrier.display.width() / 2 ) - 10;
+  unsigned char center = ( carrier.display.width() / 2 ) - 10;
   String message = "A very very long text line, you don't know how much long";
 
   carrier.display.setRotation(0);
@@ -152,4 +160,20 @@ void wrapText(long unsigned int delayTime) {
   carrier.display.print(message);
 
   delay(delayTime);
+}
+
+void demoChar(long unsigned int delayTime) {
+  char test = 0;
+  for (int i = 0; i <= 300; i++) {
+    carrier.display.fillScreen(ST77XX_WHITE);
+    carrier.display.setCursor(10, 100);
+
+    
+    carrier.display.print(test, DEC);
+
+
+    delay(delayTime);
+
+    test++;
+  }
 }
