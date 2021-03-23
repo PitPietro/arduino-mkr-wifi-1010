@@ -46,6 +46,7 @@ void getScreenDim(long unsigned int, unsigned char, unsigned char);
 void rotateScreen(long unsigned int);
 void setTextColorAllColors(long unsigned int);
 void wrapText(long unsigned int);
+void demoChar(long unsigned int);
 
 void setup() {
   CARRIER_CASE = false;
@@ -54,19 +55,20 @@ void setup() {
 
 void loop() {
   /* general */
-  fillScreenAllColors(1000);
+  // fillScreenAllColors(1000);
 
   // display the screen dimensions
-  getScreenDim(5000, 15, 110);
+  // getScreenDim(5000, 15, 110);
 
   // rotate the screen (0-3)
-  rotateScreen(2000);
+  // rotateScreen(2000);
 
   /* text color */
-  setTextColorAllColors(1000);
-  wrapText(2000);
+  // setTextColorAllColors(1000);
+  // wrapText(2000);
 
-  /* TODO text demos */
+  /* text demos */
+  demoChar(100);
 }
 
 void fillScreenAllColors(long unsigned int delayTime) {
@@ -163,17 +165,17 @@ void wrapText(long unsigned int delayTime) {
 }
 
 void demoChar(long unsigned int delayTime) {
-  char test = 0;
-  for (int i = 0; i <= 300; i++) {
+  for (char i = 0; i <= 255; i++) {
     carrier.display.fillScreen(ST77XX_WHITE);
-    carrier.display.setCursor(10, 100);
+    carrier.display.setTextColor(ST77XX_BLACK);
+    carrier.display.setRotation(0);
+    carrier.display.setTextSize(4);
+    carrier.display.setCursor(20, 100);
+    carrier.display.print(i, DEC);
 
-    
-    carrier.display.print(test, DEC);
-
+    carrier.display.setCursor(150, 100);
+    carrier.display.print(i);
 
     delay(delayTime);
-
-    test++;
   }
 }
