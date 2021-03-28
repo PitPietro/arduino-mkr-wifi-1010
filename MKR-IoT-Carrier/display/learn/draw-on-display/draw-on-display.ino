@@ -23,11 +23,15 @@
 #include <Arduino_MKRIoTCarrier.h>
 MKRIoTCarrier carrier;
 
+// draw & fill
 void drawPixelOnDisplay(long unsigned int, unsigned char, unsigned char);
 void drawLineOnDisplay(long unsigned int, unsigned char, unsigned char, unsigned char, unsigned char);
+void drawRectOnDisplay(long unsigned int, unsigned char, unsigned char, unsigned char, unsigned char);
+void fillRectOnDisplay(long unsigned int, unsigned char, unsigned char, unsigned char, unsigned char);
 
 // demos
 void drawLineOnDisplayDemo(long unsigned int);
+void drawRectOnDisplayDemo(long unsigned int);
 
 void setup() {
   CARRIER_CASE = false;
@@ -35,14 +39,18 @@ void setup() {
 }
 
 void loop() {
-  drawPixelOnDisplay(4000, 120, 180);
-  drawLineOnDisplay(1000, 60, 40, 150, 190);
+  // drawPixelOnDisplay(4000, 120, 180);
+  // drawLineOnDisplay(1000, 60, 40, 150, 190);
 
   // TODO test out the functions below
   // void drawFastVLine(uint16_t x0, uint16_t y0, uint16_t length, uint16_t color);
   // void drawFastHLine(uint8_t x0, uint8_t y0, uint8_t length, uint16_t color);
 
+  drawRectOnDisplay(6000, 70, 40, 80, 110);
+  fillRectOnDisplay(6000, 50, 40, 60, 80);
+
   // drawLineOnDisplayDemo(50);
+  // drawRectOnDisplayDemo(50);
 }
 
 void defaultDisplayConfig() {
@@ -59,6 +67,23 @@ void printCoordinates(unsigned char x, unsigned char y) {
   carrier.display.print("; ");
   carrier.display.print(y);
   carrier.display.print(")");
+}
+
+void printCoordinatesWithConstant(unsigned char x, unsigned char y, unsigned char k, char pos) {
+  if (pos == 'U') {
+    // UP
+    carrier.display.setCursor(x + k, y - k);
+  } else if (pos == 'D') {
+    // DOWN
+    carrier.display.setCursor(x + k, y + k);
+  }
+
+  carrier.display.print("(");
+  carrier.display.print(x);
+  carrier.display.print("; ");
+  carrier.display.print(y);
+  carrier.display.print(")");
+
 }
 
 /*
@@ -89,6 +114,43 @@ void drawLineOnDisplay(long unsigned int delayTime, unsigned char x0, unsigned c
 }
 
 /*
+  (x0, y0) for the top-left corner of the rectangle, a width and height and a color.
+
+  drawRect() renders just the outline of the rectangle — the interior is unaffected —
+  fillRect() fills the entire area with a given color.
+
+  void drawRect(uint16_t x0, uint16_t y0, uint16_t w, uint16_t h, uint16_t color);
+*/
+void drawRectOnDisplay(long unsigned int delayTime, unsigned char x0, unsigned char y0, unsigned char w, unsigned char h) {
+  defaultDisplayConfig();
+
+  printCoordinatesWithConstant(x0, y0, 5, 'U');
+  printCoordinatesWithConstant(x0 + w, y0, 5, 'U');
+  printCoordinatesWithConstant(x0, y0 + h, 5, 'D');
+  printCoordinatesWithConstant(x0 + w, y0 + h, 5, 'D');
+
+  carrier.display.drawRect(x0, y0, w, h, ST77XX_RED);
+
+  delay(delayTime);
+}
+
+/*
+  void fillRect(uint16_t x0, uint16_t y0, uint16_t w, uint16_t h, uint16_t color);
+*/
+void fillRectOnDisplay(long unsigned int delayTime, unsigned char x0, unsigned char y0, unsigned char w, unsigned char h) {
+  defaultDisplayConfig();
+
+  printCoordinatesWithConstant(x0, y0, 10, 'U');
+  printCoordinatesWithConstant(x0 + w, y0, 5, 'U');
+  printCoordinatesWithConstant(x0, y0 + h, 5, 'D');
+  printCoordinatesWithConstant(x0 + w, y0 + h, 5, 'D');
+
+  carrier.display.fillRect(x0, y0, w, h, ST77XX_RED);
+
+  delay(delayTime);
+}
+
+/*
    demos
 */
 
@@ -103,4 +165,8 @@ void drawLineOnDisplayDemo(long unsigned int delayTime) {
     carrier.display.drawLine(0, 0, i, height - i, ST77XX_RED);
     delay(delayTime);
   }
+}
+
+void drawRectOnDisplayDemo(long unsigned int delayTime) {
+
 }
