@@ -3,6 +3,10 @@
 MKRIoTCarrier carrier;
 float x, y, z;
 
+/**
+ * <Arduino_MKRIoTCarrier.h> includes <Arduino_LSM6DS3.h> library.
+ * Follow the instructions here: https://www.arduino.cc/en/Reference/Arduino_LSM6DS3
+ */
 void setup() {
   CARRIER_CASE = false;
   carrier.begin();
@@ -21,7 +25,7 @@ void loop() {
     printAcceleration();
   }
 
-  // always place a short delay before closing the loop to let the board "take a breath" between the cycles.
+  // always place a short delay before closing the loop to let the board "take a breath" between the cycles
   delay(100);
 }
 
