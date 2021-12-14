@@ -1,17 +1,16 @@
 // TODO let the user select which song to play by using the buttons (and the SD card to store the songs, if they're too many)
 
 /*
-   Play Melody on MKR IoT C arrier
-
-   Using all the constants made fot the notes (inside "musical-notes.h"), you
-   can create the melody you want. Please refer to the wiki page linked below if
-   you want to create your own melody
-
-   Reference: https://www.arduino.cc/en/Tutorial/BuiltInExamples/toneMelody
-   BPM to sec:
-   1) https://toolstud.io/music/bpm.php
-   2) https://tomhess.net/Tools/DelayCalculator.aspx
-   Wiki: https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder
+ * Play Melody on MKR IoT C arrier
+ * 
+ * Using all the constants made for the notes (placed inside "musical-notes.h"), you can create the melody you want.
+ * Please refer to the wiki page linked below if you want to create your own melody
+ * 
+ * Reference: https://www.arduino.cc/en/Tutorial/BuiltInExamples/toneMelody
+ * BPM to sec:
+ * 1) https://toolstud.io/music/bpm.php
+ * 2) https://tomhess.net/Tools/DelayCalculator.aspx
+ * Wiki: https://github.com/PitPietro/arduino-mkr-wifi-1010/wiki/output-folder
 */
 
 #include <Arduino_MKRIoTCarrier.h>
@@ -25,9 +24,9 @@ MKRIoTCarrier carrier;
 unsigned const short int DEFAULT_BPM = 60;
 
 /*
-   Translate BPM to the milliseconds of four musical measures
-
-   i.e. 60 BPM = 1 second * 4 musical measures = 4 seconds = 4'000 ms
+ * Translate BPM to the milliseconds of four musical measures
+ * 
+ * i.e. 60 BPM = 1 second * 4 musical measures = 4 seconds = 4'000 ms
 */
 double BPMToMillisec(int bpm) {
   float beat_per_sec = (double)bpm / 60;
@@ -36,12 +35,12 @@ double BPMToMillisec(int bpm) {
 }
 
 /*
-   Return the number of notes. The melody has MAX_NOTES dimension to fit
-   a large melody, but can be shorter, so it's important dot to play a lot
-   of useless pauses.
-
-   The melody must have END as the last element, it wouldn't be correct
-   to stop count the melody dimension when there's a PAUSE (or more pauses)
+ * Return the number of notes. The melody has MAX_NOTES dimension to fit
+ * a large melody, but can be shorter, so it's important dot to play a lot
+ * of useless pauses.
+ * 
+ * The melody must have END as the last element, it wouldn't be correct
+ * to stop count the melody dimension when there's a PAUSE (or more pauses)
 */
 int melodyDimension(double melody[2][MAX_NOTES]) {
   // return the number of notes
@@ -56,8 +55,6 @@ int melodyDimension(double melody[2][MAX_NOTES]) {
       j++;
       dims[i]++;
     }
-
-    // for(j = 0; j < (sizeof(melody[i]) / sizeof(melody[i][0])); j++) {}
   }
 
   // notes must be as much as the durations
@@ -69,7 +66,7 @@ int melodyDimension(double melody[2][MAX_NOTES]) {
 }
 
 /*
- * the display is controller using the Adafruit-ST7735-Library with a resolution of 240x240
+ * Display is controller using the Adafruit-ST7735-Library with a resolution of 240x240
 */
 void drawNote (double note) {
   // replaced the useless switch-case with an ugly if-else clause
@@ -107,8 +104,7 @@ void drawNote (double note) {
 }
 
 void playMelody(double melody[2][MAX_NOTES]) {
-  // melody contains the notes (in the 1st array) and the notes' duration (in
-  // the 2nd array) iterate over the notes of the melody
+  // melody contains the notes (in the 1st array) and the notes' duration (in the 2nd array) iterate over the notes of the melody
 
   int dim = melodyDimension(melody);
   int thisNote;
