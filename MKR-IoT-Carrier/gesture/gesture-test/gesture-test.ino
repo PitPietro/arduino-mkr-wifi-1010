@@ -32,4 +32,5 @@ void loop() {
       Serial.println("RIGHT");
     }
   }
+  delay(50);
 }
