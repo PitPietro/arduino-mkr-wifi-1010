@@ -10,7 +10,8 @@ void setup() {
   // Initialize serial communication at 9600 baud rate
   Serial.begin(9600);
   // Wait for serial port to connect. Needed for native USB port only.
-  while (!Serial);
+  while (!Serial)
+    ;
 }
 
 void loop() {
@@ -37,7 +38,7 @@ void loop() {
 
 void printInfo() {
   bool relayOne, relayTwo;
-  
+
   // boolean variable, returns the status: LOW means NC and HIGH means NO
   relayOne = carrier.Relay1.getStatus();
   relayTwo = carrier.Relay2.getStatus();
