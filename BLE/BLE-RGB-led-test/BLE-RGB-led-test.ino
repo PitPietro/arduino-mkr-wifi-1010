@@ -9,8 +9,11 @@ BLEUnsignedCharCharacteristic randomReading("2A58", BLERead | BLENotify);
 // creating the LED characteristic
 BLEByteCharacteristic switchChar("2A57", BLERead | BLEWrite);
 
-const int controlLedPin = LED_BUILTIN;
-const int ledPin = 2;
+#define CONTROL_LED_PIN LED_BUILTIN
+#define RED_PIN 2
+#define GREEN_PIN 3
+#define BLUE_PIN 4
+
 long previousMillis = 0;
 
 /**
@@ -23,10 +26,12 @@ void setup() {
   while (!Serial);
 
   // initialize 'controlLedPin' pin to indicate when a central is connected
-  pinMode(controlLedPin, OUTPUT);
+  pinMode(CONTROL_LED_PIN, OUTPUT);
 
-  // initialize 'ledPin' pin
-  pinMode(ledPin, OUTPUT);
+  // initialize RGB LED pins
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
 
   // initialize BLE library
   if (!BLE.begin()) {
@@ -66,7 +71,7 @@ void loop() {
     Serial.println(central.address());
 
     // turn on the "control" LED to indicate the connection
-    digitalWrite(controlLedPin, HIGH);
+    digitalWrite(CONTROL_LED_PIN, HIGH);
 
     // check the battery level every 200ms while the central is connected:
     while (central.connected()) {
@@ -76,27 +81,25 @@ void loop() {
       if (currentMillis - previousMillis >= 200) {
         previousMillis = currentMillis;
 
-        int randomValue = analogRead(A1);
-        randomReading.writeValue(randomValue);
+        // int randomValue = analogRead(A1);
+        // randomReading.writeValue(randomValue);
 
         if (switchChar.written()) {
+          const int numericValue = switchChar.value();
+          const String hexValue = String(numericValue, HEX);
+          
+          Serial.print(numericValue);
+          Serial.print("\t");
+          Serial.println(hexValue);
 
-          if (switchChar.value()) {
-            // any value other than 0
-            Serial.println("LED on");
-            digitalWrite(ledPin, HIGH);
-          } else {
-            // a 0 value
-            Serial.println("LED off");
-            digitalWrite(ledPin, LOW);
-          }
+          // it only handles 1 component from the RGB LED
+          // i.e. given 'ffccbb' as input, it prints: 'ff' on the Serial Monitor
         }
-
       }
     }
 
     // when the central disconnects, turn off the control LED
-    digitalWrite(controlLedPin, LOW);
+    digitalWrite(CONTROL_LED_PIN, LOW);
     Serial.print("Disconnected from central: ");
     Serial.println(central.address());
   }
